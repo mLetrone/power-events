@@ -1,0 +1,22 @@
+[project]
+name = "power-events"
+dynamic = ["version"]
+authors = [
+    { name = "mathieu LETRONE", email = "mathieu.letrone@gmail.com" },
+]
+description = "Add your description here"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.9"
+dependencies = [
+]
+
+[tool.hatch.build]
+skip-excluded-dirs = true
+
+[tool.hatch.version]
+source = "vcs"
+fallback-version = "0.0.0"
+
+[tool.hatch.version.raw-options]
+version_scheme = "python-simplified-semver"

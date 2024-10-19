@@ -1,0 +1,18 @@
+# Byte-compiled
+**/__pycache__
+
+# Caches
+/.*_cache
+
+# Virtual envs
+/*venv*
+
+# Distribution / packaging
+/dist
+
+# Unit test / coverage reports
+/.coverage*
+*coverage*
+/tests-reports
+*.xml
+.idea/***
