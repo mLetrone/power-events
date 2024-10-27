@@ -54,6 +54,12 @@ lint = [
     "mypy>=1.13.0",
     "ruff>=0.7.1",
 ]
+docs = [
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.5.42",
+    "mkdocstrings>=0.26.2",
+    "termynal>=0.12.1",
+]
 
 [tool.pytest.ini_options]
 minversion = "8.0"
