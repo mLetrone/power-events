@@ -31,6 +31,7 @@ classifiers = [
 
 requires-python = ">=3.9"
 dependencies = [
+    "maypy>=1.1.2",
 ]
 
 [tool.hatch.build]
@@ -61,6 +62,9 @@ docs = [
     "termynal>=0.12.1",
 ]
 
+[tool.uv]
+default-groups = ["dev", "lint"]
+
 [tool.pytest.ini_options]
 minversion = "8.0"
 required_plugins = [
@@ -68,11 +72,11 @@ required_plugins = [
     "pytest-html",
 ]
 testpaths = [
-    "src",
+    "power_events",
     "tests"
 ]
 addopts = [
-    "--cov=src",
+    "--cov=power_events",
     "--cov-config=pyproject.toml",
     "--cov-report=term-missing",
     "--cov-report=xml",
@@ -82,7 +86,7 @@ addopts = [
 ]
 
 [tool.coverage.run]
-source = ["src"]
+source = ["power_events"]
 branch = true
 parallel = true
 
@@ -107,7 +111,7 @@ show_error_context = true
 show_column_numbers = true
 show_error_codes = true
 pretty = true
-files = ["src", "tests"]
+files = ["power_events", "tests"]
 
 [tool.ruff]
 target-version = "py39"
