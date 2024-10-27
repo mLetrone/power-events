@@ -1,6 +1,7 @@
 # Byte-compiled
-**/__pycache__
+**/__pycache__/***
 
+**/*.egg-info/***
 # Caches
 /.*_cache
 
