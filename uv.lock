@@ -342,6 +342,15 @@ wheels = [
 ]
 
 [[package]]
+name = "maypy"
+version = "1.1.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/51/1d/e977b41b2b35a55b2c3ed7581a3179931700d08b2f4dc97f0ee74e4bb939/maypy-1.1.2.tar.gz", hash = "sha256:103fbbd65af250a546e061083c2ba433ca10575ec0e92412a868313c0fa262e2", size = 9636 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d6/36/daf9581d4da4f842242d49a78f92b0df7ddd53156ec42e3f1890ff0f2cc2/maypy-1.1.2-py3-none-any.whl", hash = "sha256:963c8ed36b3c46d4d87d60380f79d3fc3cf4b82c2e08af728c303729a84ea9f8", size = 8675 },
+]
+
+[[package]]
 name = "mergedeep"
 version = "1.3.4"
 source = { registry = "https://pypi.org/simple" }
@@ -551,8 +560,11 @@ wheels = [
 
 [[package]]
 name = "power-events"
-version = "0.0.0"
-source = { virtual = "." }
+version = "0.1.0.dev3+g85b26f3.d20241027"
+source = { editable = "." }
+dependencies = [
+    { name = "maypy" },
+]
 
 [package.dependency-groups]
 dev = [
@@ -573,6 +585,7 @@ lint = [
 ]
 
 [package.metadata]
+requires-dist = [{ name = "maypy", specifier = ">=1.1.2" }]
 
 [package.metadata.dependency-groups]
 dev = [
