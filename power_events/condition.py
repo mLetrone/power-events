@@ -1,9 +1,19 @@
 import re
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import Any, Callable, Container, Iterable, Mapping, TypeVar, Union
+from typing import (
+    Any,
+    Callable,
+    Container,
+    Iterable,
+    Mapping,
+    Optional,
+    TypeVar,
+    Union,
+    overload,
+)
 
-from maypy import Empty, Maybe, Predicate
+from maypy import Empty, Mapper, Maybe, Predicate
 from maypy.predicates import (
     contains,
     equals,
@@ -116,7 +126,7 @@ class Condition(ABC):
 class Value(Condition):
     """Condition based on a value at a certain path in an event."""
 
-    def __init__(self, value_path: ValuePath) -> None:
+    def __init__(self, value_path: ValuePath, mapper: Optional[Mapper[Any, Any]] = None) -> None:
         """Initialize the condition with the specified value path.
 
         Args:
@@ -124,6 +134,7 @@ class Value(Condition):
         """
         self.path = value_path
         self._predicate: Predicate[Any] = MISSING
+        self._value_mapper = mapper or (lambda val: val)
 
     @override
     def check(self, event: Mapping[str, V]) -> bool:
@@ -135,7 +146,12 @@ class Value(Condition):
         if self._predicate is MISSING:
             raise NoPredicateError(self.path)
 
-        return get_value_from_path(event, self.path).map(self._predicate).or_else(False)
+        return (
+            get_value_from_path(event, self.path)
+            .map(self._value_mapper)
+            .map(self._predicate)
+            .or_else(False)
+        )
 
     def is_truthy(self) -> Self:
         """Set the condition to check if the value is truthy."""
@@ -149,13 +165,24 @@ class Value(Condition):
         """
         return self.__add(equals(expected))
 
-    def match_regex(self, pattern: re.Pattern[str]) -> Self:
+    @overload
+    def match_regex(self, regex: re.Pattern[str]) -> Self:
+        pass
+
+    @overload
+    def match_regex(self, regex: str, flags: Union[re.RegexFlag, int] = 0) -> Self:
+        pass
+
+    def match_regex(
+        self, regex: Union[re.Pattern[str], str], flags: Union[re.RegexFlag, int] = 0
+    ) -> Self:
         """Set the condition to check if the value matches the given regex pattern.
 
         Args:
-            pattern: The regex pattern.
+            regex: The regex pattern.
+            flags:
         """
-        return self.__add(match_regex(pattern))
+        return self.__add(match_regex(regex, flags))  # type: ignore[arg-type]
 
     def one_of(self, options: Container[Any]) -> Self:
         """Set the condition to check if the value is one of the given options.
@@ -184,6 +211,18 @@ class Value(Condition):
             size: The size to check for.
         """
         return self.__add(is_length(size))
+
+    """ TODO:
+    Add:
+        - between
+        - less_than
+        - le
+        - ge
+        - gt
+        - min_length
+        - max_length
+    Added to Maypy or reduce coupling by implemented here ?
+    """
 
     def match(self, predicate: Predicate[Any]) -> Self:
         """Set the condition to check if the value matches the given predicate.

@@ -2,9 +2,9 @@ from typing import Any, Dict
 
 import pytest
 
-from src.power_events.condition import Value
-from src.power_events.exceptions import NoRouteFoundError
-from src.power_events.resolver import EventResolver
+from power_events.condition import Value
+from power_events.exceptions import NoRouteFoundError
+from power_events.resolver import EventResolver
 
 
 class TestResolver:
