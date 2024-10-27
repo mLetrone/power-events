@@ -35,7 +35,7 @@ jobs:
             pyproject.toml
 
       - name: "Install lint dependencies"
-        run: uv install --only-group lint
+        run: uv sync --only-group lint
 
       - name: "Python format"
         run: uv run ruff format --diff .
@@ -70,7 +70,7 @@ jobs:
             pyproject.toml
 
       - name: "Install dev dependencies"
-        run: uv install --no-group lint
+        run: uv sync --only-dev
 
       - name: "Run tests"
         run: uv run pytest
@@ -88,28 +88,27 @@ jobs:
     name: Combine coverages
     runs-on: ubuntu-latest
     needs: [ tests ]
+    permissions:
+      statuses: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.9"
-      - uses: astral-sh/setup-uv@v3
-        with:
-          enable-cache: true
-          cache-dependency-glob: |
-            pyproject.toml
-      - name: "Install dev dependencies"
-        run: uv install --no-group lint
+      - name: Update pip
+        run: pip install --upgrade pip
+      - name: Install coverage
+        run: pip install coverage[toml]
+
       - name: Download coverage files
         uses: actions/download-artifact@v4
         with:
           path: coverage
           merge-multiple: true
-      - name: list files
-        run: tree -a .
+
       - run: coverage combine coverage
       - run: coverage report
-      - run: coverage html -d --title "Coverage for ${{ github.sha }}" htmlcov
+      - run: coverage html -d htmlcov
       - name: Upload coverage html
         uses: actions/upload-artifact@v4
         with:
@@ -126,4 +125,5 @@ jobs:
           SMOKESHOW_GITHUB_COVERAGE_THRESHOLD: 100
           SMOKESHOW_GITHUB_CONTEXT: coverage
           SMOKESHOW_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SMOKESHOW_GITHUB_PR_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          SMOKESHOW_GITHUB_PR_HEAD_SHA: ${{ github.sha }}
+          SMOKESHOW_AUTH_KEY: ${{ secrets.SMOKESHOW_KEY }}
