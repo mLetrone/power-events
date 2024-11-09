@@ -1,0 +1,39 @@
+repos:
+  - repo: local
+    hooks:
+      - id: ruff
+        name: ruff lint
+        entry: uvx ruff check --fix --exit-non-zero-on-fix
+        language: python
+        types_or: [python, pyi]
+        require_serial: true
+        stages: [pre-commit]
+        additional_dependencies:
+          - "uv>=0.5.0"
+
+      - id: ruff-format
+        name: ruff format
+        entry: uvx ruff format
+        language: python
+        types_or: [ python, pyi ]
+        require_serial: true
+        stages: [pre-commit]
+        additional_dependencies:
+          - "uv>=0.5.0"
+
+      - id: mypy
+        name: mypy
+        entry: uvx mypy
+        language: python
+        types_or: [ python, pyi ]
+        stages: [pre-push]
+        additional_dependencies:
+          - "uv>=0.5.0"
+
+      - id: tests
+        name: tests
+        entry: uvx pytest
+        language: python
+        stages: [pre-push]
+        additional_dependencies:
+          - "uv>=0.5.0"
