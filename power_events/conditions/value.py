@@ -1,7 +1,7 @@
 import re
 from typing import Any, Container, Mapping, Optional, Union, overload
 
-from maypy import Empty, Mapper, Maybe, Predicate
+from maypy import Mapper, Maybe, Predicate
 from maypy.predicates import (
     contains,
     equals,
@@ -46,7 +46,7 @@ class Value(Condition):
         """
         self.path = value_path
         self._predicate: Predicate[Any] = MISSING
-        self._value_mapper = mapper or (lambda val: val)
+        self._value_mapper: Mapper[Any, Any] = mapper or (lambda val: val)
 
     @override
     def check(self, event: Event[V]) -> bool:
@@ -58,12 +58,10 @@ class Value(Condition):
         if self._predicate is MISSING:
             raise NoPredicateError(self.path)
 
-        return (
-            get_value_from_path(event, self.path)
-            .map(self._value_mapper)
-            .map(self._predicate)
-            .or_else(False)
-        )
+        if (val := get_value_from_path(event, self.path)) is VALUE_ABSENT:
+            return False
+
+        return self._predicate(Maybe.of(val).map(self._value_mapper).or_else(val))
 
     def is_truthy(self) -> Self:
         """Add the condition to check if the value is truthy."""
@@ -89,8 +87,8 @@ class Value(Condition):
         """Add the condition to check if the value matches the given regex pattern.
 
         Args:
-        regex: regex to match (either a string or a Pattern)
-        flags: regex flags; should bot be passed with a pattern.
+            regex: regex to match (either a string or a Pattern)
+            flags: regex flags; should bot be passed with a pattern.
 
         Raises:
             TypeError: when passing flags whereas a `Pattern` have been passed
@@ -181,8 +179,18 @@ def combine(*predicates: Predicate[Any]) -> Predicate[Any]:
     return test
 
 
-def get_value_from_path(event: Event[V], path: ValuePath) -> Maybe[Any]:
-    """Get the value at the given path from the event.
+class _Absent:
+    pass
+
+
+VALUE_ABSENT = _Absent()
+
+
+def get_value_from_path(event: Event[V], path: ValuePath) -> Any:
+    """Get the value at the given path from the event, if not present, returns `VALUE_ABSENT`.
+
+    Note:
+        This flag `VALUE_ABSENT` allow to differentiate present value at `None` and no value.
 
     Args:
         event: The event from which to retrieve the value.
@@ -192,18 +200,20 @@ def get_value_from_path(event: Event[V], path: ValuePath) -> Maybe[Any]:
     return deep_get(event, *path_keys)
 
 
-def deep_get(event: Event[V], *keys: str) -> Maybe[Any]:
+def deep_get(event: Event[V], *keys: str) -> Any:
     """Recursively get the value from a nested mapping based on the given keys.
 
     Args:
         event: The event mapping.
         keys: The sequence of keys to follow.
+
+    Returns: the value given the keys if exists, otherwise return `VALUE_ABSENT`.
     """
-    mapping: Union[Event[V], V, None] = dict(event)
+    mapping: Union[Event[V], V, _Absent] = dict(event)
 
     for key in keys:
         if isinstance(mapping, Mapping):
-            mapping = mapping.get(key)
+            mapping = mapping.get(key, VALUE_ABSENT)
         else:
-            return Empty
-    return Maybe.of(mapping)
+            return VALUE_ABSENT
+    return mapping
