@@ -1,4 +1,4 @@
-"""Power event package."""
+"""Top-level Power event package."""
 
 from importlib.metadata import PackageNotFoundError, version
 
