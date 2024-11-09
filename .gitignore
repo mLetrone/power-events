@@ -12,8 +12,7 @@
 /dist
 
 # Unit test / coverage reports
-/.coverage*
-*coverage*
+***/.coverage*
 /tests-reports
 *.xml
 .idea/***
