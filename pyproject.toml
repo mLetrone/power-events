@@ -90,6 +90,8 @@ addopts = [
 source = ["power_events"]
 branch = true
 parallel = true
+relative_files = true
+context = '${CONTEXT}'
 
 [tool.coverage.report]
 fail_under = 80

@@ -38,10 +38,10 @@ jobs:
         run: uv sync --only-group lint
 
       - name: "Python format"
-        run: uv run ruff format --diff .
+        run: uvx ruff format --diff .
 
       - name: "Python lint"
-        run: uv run ruff check .
+        run: uvx ruff check .
 
       - name: "Python type check"
         run: uv run mypy
@@ -70,7 +70,7 @@ jobs:
             pyproject.toml
 
       - name: "Install dev dependencies"
-        run: uv sync --only-dev
+        run: uv sync --python ${{ matrix.python-version }} --only-dev
 
       - name: "Run tests"
         run: uv run pytest
@@ -84,12 +84,11 @@ jobs:
           if-no-files-found: error
           include-hidden-files: true
 
-  report-coverage:
-    name: Combine coverages
+
+  combine-coverage:
+    name: "Combine coverages"
     runs-on: ubuntu-latest
     needs: [ tests ]
-    permissions:
-      statuses: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -108,13 +107,73 @@ jobs:
 
       - run: coverage combine coverage
       - run: coverage report
-      - run: coverage html -d htmlcov
+      - run: coverage html --title "Coverage for ${{ github.sha }}" -d htmlcov
+
+      - name: Store coverage data
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-data
+          path: .coverage
+          include-hidden-files: true
+
       - name: Upload coverage html
         uses: actions/upload-artifact@v4
         with:
           name: coverage-html
           path: htmlcov
           include-hidden-files: true
+          if-no-files-found: error
+
+
+  comment-coverage:
+    name: "Comment coverage on PR"
+    runs-on: ubuntu-latest
+    needs: [ combine-coverage ]
+    if: github.event_name == 'pull_request'
+    permissions:
+      pull-requests: write
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download coverage files
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-data
+
+      - name: Generate coverage comment
+        id: coverage-comment
+        uses: py-cov-action/python-coverage-comment-action@v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Store coverage comment
+        uses: actions/upload-artifact@v4
+        if: steps.coverage-comment.outputs.COMMENT_FILE_WRITTEN == 'true'
+        with:
+          name: python-coverage-comment-action
+          path: python-coverage-comment-action.txt
+
+
+  report-coverage:
+    name: Report coverages
+    runs-on: ubuntu-latest
+    needs: [ combine-coverage ]
+    permissions:
+      statuses: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - name: Update pip
+        run: pip install --upgrade pip
+
+      - name: Download coverage files
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-html
+          path: htmlcov
 
       - run: pip install smokeshow
 
