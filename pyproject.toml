@@ -31,6 +31,7 @@ classifiers = [
 
 requires-python = ">=3.9"
 dependencies = [
+    "maypy>=1.1.2",
 ]
 
 [tool.hatch.build]
@@ -49,6 +50,7 @@ dev = [
     "pytest-cov>=5.0.0",
     "pytest-html>=4.1.1",
     "pytest-sugar>=1.0.0",
+    "pre-commit>=4.0.1",
 ]
 lint = [
     "mypy>=1.13.0",
@@ -60,6 +62,9 @@ docs = [
     "mkdocstrings>=0.26.2",
     "termynal>=0.12.1",
 ]
+
+[tool.uv]
+default-groups = ["dev", "lint"]
 
 [tool.pytest.ini_options]
 minversion = "8.0"
