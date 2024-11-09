@@ -47,8 +47,8 @@ class EventResolver:
         """Initialize the event resolver with optional configuration.
 
         Args:
-            allow_multiple_routes: option to allow multiples routes on same event, otherwaise raise `MultipleRoutesError`.
-            allow_no_route: option to allow no routes on event, otherwaise raise `NoRouteFoundError`.
+            allow_multiple_routes: option to allow multiples routes on same event, otherwise raise `MultipleRoutesError`.
+            allow_no_route: option to allow no routes on event, otherwise raise `NoRouteFoundError`.
         """
         self._routes: List[EventRoute] = []
         self._allow_multiple_routes = allow_multiple_routes
