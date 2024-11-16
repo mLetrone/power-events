@@ -29,8 +29,7 @@ class TestCondition:
     def test_nested_or_conditions(self) -> None:
         condition = (Value("a.b").equals(1) & Value("a.c").equals("maypy")) | Value("d").is_truthy()
 
-        assert condition.check({"a": {"b": 1, "c": "maypy"}})
-        assert condition.check({"d": True})
+        assert condition.check({"a": {"b": 1, "c": "maypy"}, "d": False})
         assert condition.check({"a": {"b": 1, "c": "maypy"}, "d": True})
         assert condition.check({"a": {"b": 2, "c": "maypy"}, "d": True})
         assert not condition.check({"a": {"b": 2, "c": "maypy"}, "d": False})
@@ -39,8 +38,7 @@ class TestCondition:
         condition = (Value("a.b").equals(1) & Value("a.c").equals("maypy")) & Value("d").is_truthy()
 
         assert condition.check({"a": {"b": 1, "c": "maypy"}, "d": True})
-        assert not condition.check({"a": {"b": 1, "c": "maypy"}})
-        assert not condition.check({"d": True})
+        assert not condition.check({"a": {"b": 1, "c": "maypy"}, "d": False})
         assert not condition.check({"a": {"b": 2, "c": "maypy"}, "d": True})
         assert not condition.check({"a": {"b": 2, "c": "maypy"}, "d": False})
 

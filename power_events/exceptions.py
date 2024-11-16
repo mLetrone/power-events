@@ -5,6 +5,17 @@ class PowerEventsError(Exception):
     """Base class for exceptions of power_events."""
 
 
+class ValueAbsentError(PowerEventsError):
+    """Exception raised when the value to check is not present inside the event."""
+
+    def __init__(self, path: str, missing_key: str, event: Mapping[Any, Any]) -> None:
+        self.path = path
+        self.missing_key = missing_key
+        super().__init__(
+            f"The value define by path <{path}> is missing the key <{missing_key}> in event:\n{event}"
+        )
+
+
 class NoPredicateError(PowerEventsError):
     """Exception raised when no predicate has been set for a value condition."""
 

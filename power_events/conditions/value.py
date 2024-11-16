@@ -15,7 +15,7 @@ from maypy.predicates import (
 from typing_extensions import Self, override
 
 from power_events.conditions.condition import And, Condition, Event, Or, V
-from power_events.exceptions import NoPredicateError
+from power_events.exceptions import NoPredicateError, ValueAbsentError
 
 ValuePath = str
 _KEY_PATH_REGEX = r"(\w+)+\.?"
@@ -25,7 +25,7 @@ class _MissingPredicate(Predicate[Any]):
     """A predicate that always returns False, representing a missing condition."""
 
     def __call__(self, val: Any) -> bool:
-        return False  # pragma: no cover
+        raise NotImplementedError  # pragma: no cover
 
     def __repr__(self) -> str:
         return "Predicate<MISSING>"
@@ -50,25 +50,25 @@ class Value(Condition):
 
     @override
     def check(self, event: Event[V]) -> bool:
-        """Check if the condition holds for the given event.
+        """Check the given event respect the value condition.
 
         Raises:
             NoPredicateError: when no predicate has been set.
+            ValueAbsentError: if a key define by the path is missing in event.
         """
         if self._predicate is MISSING:
             raise NoPredicateError(self.path)
 
-        if (val := get_value_from_path(event, self.path)) is VALUE_ABSENT:
-            return False
+        val = get_value_from_path(event, self.path)
 
         return self._predicate(Maybe.of(val).map(self._value_mapper).or_else(val))
 
     def is_truthy(self) -> Self:
-        """Add the condition to check if the value is truthy."""
+        """Add value is truthy check to the condition."""
         return self.__add(is_truthy)
 
     def equals(self, expected: Any) -> Self:
-        """Add the condition to check if the value equals the expected value.
+        """Add value equals the expected value check to the condition.
 
         Args:
             expected: The expected value.
@@ -84,7 +84,7 @@ class Value(Condition):
     def match_regex(
         self, regex: Union[re.Pattern[str], str], flags: Union[re.RegexFlag, int] = 0
     ) -> Self:
-        """Add the condition to check if the value matches the given regex pattern.
+        """Add value matches the given regex pattern check to the condition.
 
         Args:
             regex: regex to match (either a string or a Pattern)
@@ -96,7 +96,7 @@ class Value(Condition):
         return self.__add(match_regex(regex, flags))  # type: ignore[arg-type]
 
     def one_of(self, options: Container[Any]) -> Self:
-        """Add the condition to check if the value is one of the given options.
+        """Add value is one of the given options check to the condition.
 
         Args:
             options: The container of options.
@@ -104,7 +104,7 @@ class Value(Condition):
         return self.__add(one_of(options))
 
     def contains(self, *items: Any) -> Self:
-        """Add the condition to check if the value contains all the given items.
+        """Add value contains all the given items to the condition.
 
         Args:
             items: The items to check for.
@@ -112,19 +112,19 @@ class Value(Condition):
         return self.__add(contains(*items))
 
     def is_not_empty(self) -> Self:
-        """Add the condition to check if the value is not empty."""
+        """Add value is not empty to the condition."""
         return self.__add(neg(is_empty))
 
-    def is_size(self, size: int) -> Self:
-        """Add the condition to check if the value has the specified size.
+    def is_length(self, length: int) -> Self:
+        """Add value has the specified size to the condition.
 
         Args:
-            size: The size to check for.
+            length: The length expected.
         """
-        return self.__add(is_length(size))
+        return self.__add(is_length(length))
 
     def match(self, predicate: Predicate[Any]) -> Self:
-        """Add the condition to check if the value matches the given predicate.
+        """Add value matches the given predicate to the condition.
 
         Args:
             predicate: The predicate to apply.
@@ -179,41 +179,27 @@ def combine(*predicates: Predicate[Any]) -> Predicate[Any]:
     return test
 
 
-class _Absent:
-    pass
-
-
-VALUE_ABSENT = _Absent()
-
-
 def get_value_from_path(event: Event[V], path: ValuePath) -> Any:
-    """Get the value at the given path from the event, if not present, returns `VALUE_ABSENT`.
-
-    Note:
-        This flag `VALUE_ABSENT` allow to differentiate present value at `None` and no value.
+    """Get the value at the given path from the event, if not present, raise an error`.
 
     Args:
         event: The event from which to retrieve the value.
         path: The path of the value in the event.
+
+    Raises:
+        ValueAbsentError: if a key define by the path is missing in event.
     """
+    mapping: Union[Event[V], V] = dict(event)
     path_keys = re.findall(_KEY_PATH_REGEX, path)
-    return deep_get(event, *path_keys)
 
+    for key in path_keys:
+        key_present = False
 
-def deep_get(event: Event[V], *keys: str) -> Any:
-    """Recursively get the value from a nested mapping based on the given keys.
-
-    Args:
-        event: The event mapping.
-        keys: The sequence of keys to follow.
-
-    Returns: the value given the keys if exists, otherwise return `VALUE_ABSENT`.
-    """
-    mapping: Union[Event[V], V, _Absent] = dict(event)
-
-    for key in keys:
         if isinstance(mapping, Mapping):
-            mapping = mapping.get(key, VALUE_ABSENT)
-        else:
-            return VALUE_ABSENT
+            if key in mapping:
+                mapping = mapping[key]
+                key_present = True
+
+        if not key_present:
+            raise ValueAbsentError(path, key, event)
     return mapping

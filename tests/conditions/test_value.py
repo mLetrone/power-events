@@ -4,8 +4,8 @@ import pytest
 from maypy.predicates import contains, is_length
 
 from power_events.conditions import Neg, Value
-from power_events.conditions.value import VALUE_ABSENT, combine, get_value_from_path
-from power_events.exceptions import NoPredicateError
+from power_events.conditions.value import combine, get_value_from_path
+from power_events.exceptions import NoPredicateError, ValueAbsentError
 
 
 def test_combine() -> None:
@@ -16,10 +16,14 @@ def test_combine() -> None:
     assert not pred([1, 2])
 
 
-def test_get_value_from_path_should_return_empty_when_no_value() -> None:
-    event = {"a": {"b": "c"}}
+def test_get_value_from_path_should_raise_error_when_no_value() -> None:
+    event = {"a": 1}
 
-    assert get_value_from_path(event, "a.d") is VALUE_ABSENT
+    with pytest.raises(ValueAbsentError) as excinfo:
+        get_value_from_path(event, "a.d")
+
+        assert excinfo.value.missing_key == "d"
+        assert excinfo.value.path == "a.d"
 
 
 def test_get_value_from_path_should_return_value() -> None:
@@ -36,7 +40,7 @@ def test_get_value_from_path_with_empty_path_should_return_root() -> None:
 class TestValue:
     def test_is_truthy(self) -> None:
         assert Value("a.b").is_truthy().check({"a": {"b": True}})
-        assert not Value("a.b").is_truthy().check({"a": 1})
+        assert not Value("a.b").is_truthy().check({"a": {"b": False}})
 
     def test_equal_with_none(self) -> None:
         assert Value("a").equals(None).check({"a": None})
@@ -49,8 +53,8 @@ class TestValue:
         assert not Value("a.b").is_not_empty().check({"a": {"b": []}})
 
     def test_is_size(self) -> None:
-        assert Value("a.b").is_size(3).check({"a": {"b": [1, 2, 3]}})
-        assert not Value("a.b").is_size(3).check({"a": {"b": []}})
+        assert Value("a.b").is_length(3).check({"a": {"b": [1, 2, 3]}})
+        assert not Value("a.b").is_length(3).check({"a": {"b": []}})
 
     def test_one_of(self) -> None:
         assert Value("a.b").one_of(["foo", "bar"]).check({"a": {"b": "bar"}})
@@ -67,11 +71,12 @@ class TestValue:
         assert Value("a.b").match(is_even).check({"a": {"b": 8}})
         assert not Value("a.b").match(is_even).check({"a": {"b": 7}})
 
-    def test_check_false_when_value_not_in_event(self) -> None:
-        assert not Value("a.b.c").equals(2).check({})
-
-    def test_check_false_when_value_not_equals(self) -> None:
+    def test_equals(self) -> None:
         assert not Value("a.b.c").equals(2).check({"a": {"b": {"c": 1}}})
+
+    def test_check_raise_error_when_value_not_in_event(self) -> None:
+        with pytest.raises(ValueAbsentError):
+            Value("a.b.c").equals(2).check({})
 
     def test_check_value(self) -> None:
         assert Value("a.b").equals(2).check({"a": {"b": 2}})
@@ -87,7 +92,7 @@ class TestValue:
             Value("a.b.c").check({})
 
     def test_check_multiple_predicates(self) -> None:
-        value = Value("a").contains(1).is_size(3)
+        value = Value("a").contains(1).is_length(3)
         assert value.check({"a": [3, 2, 1]})
         assert not value.check({"a": [3, 1]})
         assert not value.check({"a": [3, 2, 4]})
