@@ -13,6 +13,6 @@
 
 # Unit test / coverage reports
 ***/.coverage*
-/tests-reports
+***/tests-reports/***
 *.xml
 .idea/***
