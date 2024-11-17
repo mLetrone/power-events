@@ -12,7 +12,7 @@ from typing_extensions import override
 
 K = TypeVar("K")
 V = TypeVar("V")
-Event = Mapping[str, V]
+Event = Mapping[Any, V]
 
 
 class Condition(ABC):
