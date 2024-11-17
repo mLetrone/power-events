@@ -1,10 +1,11 @@
 import re
-from typing import Any, Container, Mapping, Optional, Union, overload
+from typing import Any, Container, List, Mapping, Optional, Union, overload
 
 from maypy import Mapper, Maybe, Predicate
 from maypy.predicates import (
     contains,
     equals,
+    is_blank_str,
     is_empty,
     is_length,
     is_truthy,
@@ -17,8 +18,94 @@ from typing_extensions import Self, override
 from power_events.conditions.condition import And, Condition, Event, Or, V
 from power_events.exceptions import NoPredicateError, ValueAbsentError
 
-ValuePath = str
-_KEY_PATH_REGEX = r"(\w+)+\.?"
+
+class Absent:
+    """Sentinel class to represent value absence."""
+
+
+ABSENT = Absent()
+
+
+class ValuePath(str):
+    """A path-like string for accessing nested mappings value."""
+
+    SEPARATOR = "."
+    separator: str
+    keys: List[str]
+
+    def __new__(cls, path: str, *, separator: Optional[str] = None) -> Self:
+        """Create a new ValuePath object from a path string.
+
+        Args:
+            path: path string of a value inside a mapping object.
+            separator: custom separator to use instead of the default.
+        """
+        separator = separator or cls.SEPARATOR
+        is_blank = is_blank_str(path)
+
+        if not is_blank:
+            cls._validation(path, separator)
+
+        instance = super().__new__(cls, path)
+        instance.separator = separator
+        instance.keys = [] if is_blank else instance.strip().split(separator)
+
+        return instance
+
+    def get(
+        self,
+        mapping: Mapping[Any, V],
+        default: Union[V, None, Absent] = ABSENT,
+        *,
+        raise_if_absent: bool = False,
+    ) -> Union[Any, None, Absent]:
+        """Get the value describe by the path inside mapping object.
+
+        The value returns can be the sentinel `ABSENT` to differentiate real `None` value of default.
+
+        Args:
+            mapping: Dictionary or mapping object to lookup.
+            default: Default value if key not found. By default return the sentinel value `ABSENT`.
+            raise_if_absent: Flag to raise `ValueAbsentError` if missing key. Default `False`
+
+        Note:
+            Support both string and integer keys.
+
+        Raises:
+            ValueAbsentError: if parameter `raise_if_absent` set, and key is missing.
+        """
+        value: Union[Mapping[Any, V], V, None, Absent] = dict(mapping)
+        for key in self.keys:
+            key_present = False
+
+            if isinstance(value, Mapping):
+                if key in value:
+                    value = value[key]
+                    key_present = True
+
+                elif key.isdigit() and (num_key := int(key)) in value:
+                    value = value[num_key]
+                    key_present = True
+
+            if not key_present:
+                if raise_if_absent:
+                    raise ValueAbsentError(self, key, mapping)
+                return default
+        return value
+
+    @staticmethod
+    def _validation(path: str, sep: str) -> None:
+        """Validate string path."""
+        if path[0] == sep:
+            raise ValueError(f"Path value should not begin by key sep '{sep}'")
+
+        if path[-1] == sep:
+            raise ValueError(f"Path value should not end by key sep '{sep}'")
+
+        if sep * 2 in path:
+            raise ValueError(
+                f"Path value should not contain consecutive separators, '{sep * 2}' is forbidden"
+            )
 
 
 class _MissingPredicate(Predicate[Any]):
@@ -37,19 +124,19 @@ MISSING = _MissingPredicate()
 class Value(Condition):
     """Condition based on a value at a certain path in an event."""
 
-    def __init__(self, value_path: ValuePath, mapper: Optional[Mapper[Any, Any]] = None) -> None:
+    def __init__(self, value_path: str, mapper: Optional[Mapper[Any, Any]] = None) -> None:
         """Initialize the condition with the specified value path.
 
         Args:
             value_path: The path to the value in the event.
             mapper: mapper to transform value before checking predicates on it.
         """
-        self.path = value_path
+        self.path: ValuePath = ValuePath(value_path)
         self._predicate: Predicate[Any] = MISSING
-        self._value_mapper: Mapper[Any, Any] = mapper or (lambda val: val)
+        self.mapper: Mapper[Any, Any] = mapper or (lambda val: val)
 
     @override
-    def check(self, event: Event[V]) -> bool:
+    def check(self, event: Event[V], *, raise_if_absent: bool = False) -> bool:
         """Check the given event respect the value condition.
 
         Raises:
@@ -59,9 +146,10 @@ class Value(Condition):
         if self._predicate is MISSING:
             raise NoPredicateError(self.path)
 
-        val = get_value_from_path(event, self.path)
+        if (val := self.path.get(event, raise_if_absent=raise_if_absent)) is ABSENT:
+            return False
 
-        return self._predicate(Maybe.of(val).map(self._value_mapper).or_else(val))
+        return self._predicate(Maybe.of(val).map(self.mapper).or_else(val))
 
     def is_truthy(self) -> Self:
         """Add value is truthy check to the condition."""
@@ -177,29 +265,3 @@ def combine(*predicates: Predicate[Any]) -> Predicate[Any]:
         return all(predicate(val) for predicate in predicates)
 
     return test
-
-
-def get_value_from_path(event: Event[V], path: ValuePath) -> Any:
-    """Get the value at the given path from the event, if not present, raise an error`.
-
-    Args:
-        event: The event from which to retrieve the value.
-        path: The path of the value in the event.
-
-    Raises:
-        ValueAbsentError: if a key define by the path is missing in event.
-    """
-    mapping: Union[Event[V], V] = dict(event)
-    path_keys = re.findall(_KEY_PATH_REGEX, path)
-
-    for key in path_keys:
-        key_present = False
-
-        if isinstance(mapping, Mapping):
-            if key in mapping:
-                mapping = mapping[key]
-                key_present = True
-
-        if not key_present:
-            raise ValueAbsentError(path, key, event)
-    return mapping

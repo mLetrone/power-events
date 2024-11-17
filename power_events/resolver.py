@@ -6,7 +6,7 @@ from typing import Any, Callable, Container, Dict, List, Mapping, TypeVar
 from maypy.predicates import is_empty
 from typing_extensions import Concatenate, ParamSpec
 
-from .conditions import Condition, Value, ValuePath
+from .conditions import Condition, Value
 from .exceptions import MultipleRoutesError, NoRouteFoundError
 
 T = TypeVar("T")
@@ -14,7 +14,7 @@ K = TypeVar("K")
 V = TypeVar("V")
 P = ParamSpec("P")
 
-Func = Callable[Concatenate[Dict[str, Any], P], Any]
+Func = Callable[Concatenate[Dict[Any, Any], P], Any]
 
 logger = Logger("power_events")
 
@@ -54,7 +54,7 @@ class EventResolver:
         self._allow_multiple_routes = allow_multiple_routes
         self._allow_no_route = allow_no_route
 
-    def equal(self, value_path: ValuePath, expected: Any) -> Callable[[Func[P]], Func[P]]:
+    def equal(self, value_path: str, expected: Any) -> Callable[[Func[P]], Func[P]]:
         """Register a route with an equality condition.
 
         Args:
@@ -63,9 +63,7 @@ class EventResolver:
         """
         return self.when(Value(value_path).equals(expected))
 
-    def one_of(
-        self, value_path: ValuePath, options: Container[Any]
-    ) -> Callable[[Func[P]], Func[P]]:
+    def one_of(self, value_path: str, options: Container[Any]) -> Callable[[Func[P]], Func[P]]:
         """Register a route with a one-of condition.
 
         Args:
@@ -78,7 +76,7 @@ class EventResolver:
         """Register a route with a custom condition.
 
         Args:
-            condition: The condition to apply to the route.
+            condition: The condition to trigger this route.
         """
 
         def register_route(fn: Func[P]) -> Func[P]:
@@ -88,7 +86,7 @@ class EventResolver:
 
         return register_route
 
-    def resolve(self, event: Mapping[str, V]) -> Sequence[Any]:
+    def resolve(self, event: Mapping[Any, V]) -> Sequence[Any]:
         """Resolve the event to the matching routes and execute their functions.
 
         Args:
@@ -101,7 +99,7 @@ class EventResolver:
         return [route.func(event) for route in available_routes]
 
     def _handle_multiple_routes(
-        self, event: Mapping[str, V], available_routes: List[EventRoute]
+        self, event: Mapping[Any, V], available_routes: List[EventRoute]
     ) -> None:
         """Handle cases where multiple routes match the event.
 
@@ -117,7 +115,7 @@ class EventResolver:
                 raise MultipleRoutesError(event, [route.name for route in available_routes])
             logger.warning("Multiple routes for this event")  # pragma: no cover
 
-    def _handle_not_found(self, event: Mapping[str, V], available_routes: List[EventRoute]) -> None:
+    def _handle_not_found(self, event: Mapping[Any, V], available_routes: List[EventRoute]) -> None:
         """Handle cases where no routes match the event.
 
         Args:
