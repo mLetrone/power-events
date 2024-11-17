@@ -70,7 +70,7 @@ jobs:
             pyproject.toml
 
       - name: "Install dev dependencies"
-        run: uv sync --python ${{ matrix.python-version }} --only-dev
+        run: uv sync --python ${{ matrix.python-version }} --group testing
 
       - name: "Run tests"
         run: uv run pytest
