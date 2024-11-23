@@ -667,7 +667,7 @@ wheels = [
 
 [[package]]
 name = "power-events"
-version = "0.1.0.dev8+gdfaba00.d20241110"
+version = "0.1.0.dev14+g2439254"
 source = { editable = "." }
 dependencies = [
     { name = "maypy" },
@@ -688,6 +688,13 @@ all = [
     { name = "ruff" },
     { name = "termynal" },
 ]
+dev = [
+    { name = "pre-commit" },
+    { name = "pytest" },
+    { name = "pytest-cov" },
+    { name = "pytest-html" },
+    { name = "pytest-sugar" },
+]
 docs = [
     { name = "mike" },
     { name = "mkdocs" },
@@ -697,14 +704,12 @@ docs = [
 ]
 lint = [
     { name = "mypy" },
-    { name = "ruff" },
-]
-testing = [
     { name = "pre-commit" },
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-html" },
     { name = "pytest-sugar" },
+    { name = "ruff" },
 ]
 
 [package.metadata]
@@ -725,7 +730,13 @@ all = [
     { name = "ruff", specifier = ">=0.7.1" },
     { name = "termynal", specifier = ">=0.12.1" },
 ]
-dev = []
+dev = [
+    { name = "pre-commit", specifier = ">=4.0.1" },
+    { name = "pytest", specifier = ">=8.3.3" },
+    { name = "pytest-cov", specifier = ">=5.0.0" },
+    { name = "pytest-html", specifier = ">=4.1.1" },
+    { name = "pytest-sugar", specifier = ">=1.0.0" },
+]
 docs = [
     { name = "mike", specifier = ">=2.1.3" },
     { name = "mkdocs", specifier = ">=1.6.1" },
@@ -735,14 +746,12 @@ docs = [
 ]
 lint = [
     { name = "mypy", specifier = ">=1.13.0" },
-    { name = "ruff", specifier = ">=0.7.1" },
-]
-testing = [
     { name = "pre-commit", specifier = ">=4.0.1" },
     { name = "pytest", specifier = ">=8.3.3" },
     { name = "pytest-cov", specifier = ">=5.0.0" },
     { name = "pytest-html", specifier = ">=4.1.1" },
     { name = "pytest-sugar", specifier = ">=1.0.0" },
+    { name = "ruff", specifier = ">=0.7.1" },
 ]
 
 [[package]]

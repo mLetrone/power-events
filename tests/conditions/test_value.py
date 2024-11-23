@@ -69,6 +69,9 @@ class TestValuePath:
 
 
 class TestValue:
+    def test_root(self) -> None:
+        assert Value.root().contains("a").check({"a": 1})
+
     def test_is_truthy(self) -> None:
         assert Value("a.b").is_truthy().check({"a": {"b": True}})
         assert not Value("a.b").is_truthy().check({"a": {"b": False}})

@@ -135,9 +135,25 @@ class Value(Condition):
         self._predicate: Predicate[Any] = MISSING
         self.mapper: Mapper[Any, Any] = mapper or (lambda val: val)
 
+    @classmethod
+    def root(cls) -> Self:
+        """Initialize value targeting condition over the event itself.
+
+        Examples:
+            ```python
+            Value.root().contains("a").check(my_dict)
+            #  is equivalent to.
+            "a" in my_dict
+            ```
+        """
+        return cls("")
+
     @override
     def check(self, event: Event[V], *, raise_if_absent: bool = False) -> bool:
         """Check the given event respect the value condition.
+
+        By default, the event fails the check if the value is absent, an error can be raised,
+        by setting the flag `raise_if_absent`.
 
         Raises:
             NoPredicateError: when no predicate has been set.

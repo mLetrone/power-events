@@ -7,10 +7,10 @@ from power_events.conditions.condition import And, Condition, Neg, Or
 from power_events.conditions.value import Value, ValuePath
 
 __all__ = [
-    "Value",
-    "Condition",
-    "Or",
-    "Neg",
     "And",
+    "Condition",
+    "Neg",
+    "Or",
+    "Value",
     "ValuePath",
 ]
