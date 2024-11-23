@@ -46,7 +46,7 @@ class NoRouteFoundError(RouteError):
         super().__init__(
             f"No route found for the current event: {event}.\n"
             f"Registered route functions are {', '.join(routes)}.\n"
-            "If it's normal pass the option 'allow_no_route' in the resolver definition."
+            "If it's normal pass the option 'allow_no_route' at `False` in the resolver definition."
         )
 
 

@@ -1,0 +1,98 @@
+site_name: "Power-events"
+site_url: "https://docs.power-events.dev/"
+site_author: "Mathieu LETRONE"
+copyright: "Copyright &copy; 2024, Mathieu LETRONE"
+
+theme:
+    name: material
+    local: en
+    icon:
+        repo: fontawesome/brands/github
+    features:
+        - navigation.sections
+        - navigation.top
+        - navigation.tabs
+        - navigation.footer
+        - toc.follow
+        - content.code.copy
+        - search.suggest
+        - content.code.annotate
+
+
+repo_name: "mLetrone/power-events"
+repo_url: "https://github.com/mLetrone/power-events"
+extra:
+    version:
+        provider: mike
+
+validation:
+    omitted_files: warn
+    absolute_links: warn
+    unrecognized_links: warn
+
+
+nav:
+    - Get Started:
+          - Overview: index.md
+          - Installation: installation.md
+    - Usage:
+          - Conditions: usage/conditions.md
+          - Routing:
+                - usage/index.md
+                - usage/first_steps.md
+                - usage/routing.md
+    - API Documentation:
+          - Conditions:
+                - Base condition: api/conditions.md
+                - Value: api/value.md
+          - Resolver: api/resolver.md
+          - Exceptions: api/exception.md
+
+markdown_extensions:
+    - abbr
+    - admonition
+    - attr_list
+    - md_in_html
+    - tables
+    - toc:
+          permalink: true
+          title: Page contents
+    - admonition
+    - pymdownx.details
+    - pymdownx.snippets
+    - pymdownx.highlight:
+          pygments_lang_class: true
+    - pymdownx.extra:
+        pymdownx.superfences:
+          custom_fences:
+            - name: mermaid
+              class: mermaid
+              format: !!python/name:pymdownx.superfences.fence_code_format
+    - pymdownx.emoji:
+          emoji_index: !!python/name:material.extensions.emoji.twemoji
+          emoji_generator: !!python/name:material.extensions.emoji.to_svg
+    - pymdownx.tabbed:
+          alternate_style: true
+
+plugins:
+    - mike:
+          alias_type: symlink
+          canonical_version: latest
+    - search
+    - termynal
+    - mkdocstrings:
+          handlers:
+              python:
+                  paths: [ power_events ]
+                  options:
+                      docstring_style: google
+                      members_order: source
+                      separate_signature: true
+                      show_source: false
+                      inherited_members: true
+                      filters: ["!^_", "^__[^_]+__"]
+                      docstring_options:
+                          ignore_init_summary: true
+                      merge_init_into_class: true
+                      show_signature_annotations: true
+                      signature_crossrefs: true

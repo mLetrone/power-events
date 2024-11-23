@@ -7,6 +7,8 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+env:
+  UV_PYTHON: "3.9"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}-${{ github.event.pull_request.number || github.sha }}
@@ -24,9 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.9"
+
       - name: "Install UV"
         uses: astral-sh/setup-uv@v3
         with:
@@ -60,9 +60,7 @@ jobs:
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
+
       - uses: astral-sh/setup-uv@v3
         with:
           enable-cache: true
@@ -70,7 +68,7 @@ jobs:
             pyproject.toml
 
       - name: "Install dev dependencies"
-        run: uv sync --python ${{ matrix.python-version }} --group testing
+        run: uv sync --python ${{ matrix.python-version }} --only-dev
 
       - name: "Run tests"
         run: uv run pytest

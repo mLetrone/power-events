@@ -63,7 +63,7 @@ class EventResolver:
         """
         return self.when(Value(value_path).equals(expected))
 
-    def one_of(self, value_path: str, options: Container[Any]) -> Callable[[Func[P]], Func[P]]:
+    def one_of(self, value_path: str, options: Container[V]) -> Callable[[Func[P]], Func[P]]:
         """Register a route with a one-of condition.
 
         Args:
@@ -71,6 +71,15 @@ class EventResolver:
             options: The container of expected values.
         """
         return self.when(Value(value_path).one_of(options))
+
+    def contain(self, value_path: str, *items: V) -> Callable[[Func[P]], Func[P]]:
+        """Register a route where value should contain items.
+
+        Args:
+            value_path: The path to the value in the event.
+            items: Items to in the event.
+        """
+        return self.when(Value(value_path).contains(*items))
 
     def when(self, condition: Condition) -> Callable[[Func[P]], Func[P]]:
         """Register a route with a custom condition.
