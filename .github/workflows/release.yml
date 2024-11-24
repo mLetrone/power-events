@@ -29,19 +29,21 @@ jobs:
           path: dist/
 
   publish-pypi:
-    name: "Publish to PyPi"
+    name: "Publish to PyPI"
     needs: [ build ]
     runs-on: ubuntu-latest
     permissions:
       id-token: write # IMPORTANT: mandatory for trusted publishing
-
+    environment:
+      name: pypi
+      url: https://pypi.org/p/power-events
     steps:
       - name: "Download distribution artifacts"
         uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist/
-      - name: Publish package distributions to TestPyPI
+      - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
 
   gh-release:

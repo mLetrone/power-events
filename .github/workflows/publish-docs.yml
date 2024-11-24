@@ -44,7 +44,7 @@ jobs:
 
       - name: "Get version"
         if: "startsWith(github.ref, 'refs/tags/')"
-        run: echo "TAG=$(python -c "print('.'.join('${{ github.ref_name }}'.split('.')[:2]))")>>$GITHUB_ENV
+        run: echo "TAG=$(python -c "print('.'.join('${{ github.ref_name }}'.split('.')[:2]))")">>$GITHUB_ENV
 
       - name: "Publish version $TAG"
         if: "startsWith(github.ref, 'refs/tags/')"
