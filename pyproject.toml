@@ -51,6 +51,7 @@ dev = [
     "pytest-html>=4.1.1",
     "pytest-sugar>=1.0.0",
     "pre-commit>=4.0.1",
+    "commitizen>=3.31.0",
 ]
 lint = [
     "ruff>=0.7.1",
@@ -172,3 +173,19 @@ convention = "google"
     "E731",
     "PLR2004"
 ]
+
+[tool.commitizen]
+version_provider = "scm"
+annotated_tag = true
+changelog_incremental = true
+name = "cz_customize" # use custom config
+
+[tool.commitizen.customize]
+schema = "<emoji> <type>: <body>"
+schema_pattern = ":.*:(\\s)(feat|fix|perf|refactor)(\\(\\S+\\))?!?:( [^\n\r]+)((\n\n.*)|(\\s*))?$"
+commit_parser = ":.*:\\s(?P<change_type>feat|fix|refactor|perf)(\\(\\S+\\))?!?:\\s(?P<message>.*)"
+
+[tool.commitizen.change_type_map]
+feat = ":sparkles: Features"
+fix = ":bug: Bug fixes"
+refactor = ":recycle: Refactoring"
