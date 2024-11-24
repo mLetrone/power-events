@@ -46,6 +46,21 @@ jobs:
       - name: "Python type check"
         run: uv run mypy
 
+  build-docs:
+    name: "Build docs"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+
+      - name: "Install docs dependencies"
+        run: uv sync --only-group docs
+
+      - run: uv run mkdocs build --strict
+
   tests:
     name: "Testing with Python ${{ matrix.python-version }}"
     runs-on: ubuntu-latest
