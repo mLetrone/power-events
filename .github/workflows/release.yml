@@ -4,11 +4,6 @@ on:
   push:
     tags:
       - "[0-9]+.[0-9]+.[0-9]+"
-  workflow_dispatch:
-    inputs:
-      tag:
-        required: true
-        description: "Test tags release"
 
 jobs:
   build:
@@ -39,8 +34,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write # IMPORTANT: mandatory for trusted publishing
-    environment:
-      name: testpypi
 
     steps:
       - name: "Download distribution artifacts"
@@ -50,6 +43,40 @@ jobs:
           path: dist/
       - name: Publish package distributions to TestPyPI
         uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          repository-url: https://test.pypi.org/legacy/
 
+  gh-release:
+    name: "Create a github release"
+    needs: [ publish-pypi ]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # IMPORTANT: mandatory for making GitHub Releases
+      id-token: write # IMPORTANT: mandatory for sigstore
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: "Download distribution artifacts"
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: "Sign the distribution artifacts with Sigstore"
+        uses: sigstore/gh-action-sigstore-python@v3.0.0
+        with:
+          inputs: ./dist/*
+
+      - run: pip install commitizen
+
+      - name: "Generate release body"
+        run: cz changelog --incremental --dry-run > note.md
+
+      - name: "Create Github release"
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "dist/*"
+          bodyFile: "note.md"
