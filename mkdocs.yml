@@ -47,6 +47,8 @@ nav:
                 - Value: api/value.md
           - Resolver: api/resolver.md
           - Exceptions: api/exception.md
+    - About:
+        - Changelog: changelog.md
 
 markdown_extensions:
     - abbr
