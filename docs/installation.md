@@ -20,8 +20,8 @@ installed!
 ## Install with UV
 
 !!! information
-    UV is a wonderful tools to manage your dependencies and packaging!
-    I highly recommend to check it if you don't know [Learn more :octicons-link-external-16:](https://docs.astral.sh/uv/){:target="_blank"}
+    UV is a wonderful tool to manage your dependencies and packaging!
+    I highly recommend checking it if you don't know [Learn more :octicons-link-external-16:](https://docs.astral.sh/uv/){:target="_blank"}
 
 <!-- termynal -->
 ```bash
@@ -34,8 +34,8 @@ writing lock file
 ## Install with poetry
 
 !!! information
-    Poetry is a great tools to manage your dependencies and packaging.
-    I highly recommend to check it if you don't know [Learn more :octicons-link-external-16:](https://python-poetry.org/docs/){:target="_blank"}
+    Poetry is a great tool to manage your dependencies and packaging.
+    I highly recommend checking it if you don't know [Learn more :octicons-link-external-16:](https://python-poetry.org/docs/){:target="_blank"}
 
 
 <!-- termynal -->

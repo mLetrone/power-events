@@ -27,7 +27,7 @@ This way, you can use these operators:
     Neg(condition1)
     ```
 
-## What's a condition ?
+## What's a condition?
 
 A condition is defining by **two** things:
 
@@ -43,7 +43,7 @@ With which, we define the value path in the event to check under the predicate g
 ### Path
 
 The path to a value is a string containing all the keys to reach it inside an event.
-It allows get a value at any depth level.
+It allows to get a value at any depth level.
 
 Each key should be separated by a `.`,
 otherwise it may:
@@ -66,12 +66,13 @@ event["menu"]["desserts"]["parfait"]
 To add predicate at the value check, you can either use built-in method (like [`equals`](../api/value.md/#conditions.value.Value.equals), [`one_of`](../api/value.md/#conditions.value.Value.one_of), etc.),
 or using yours, passing it to the method [`match`](../api/value.md/#conditions.value.Value.match).
 
-Each time you add a predicate, it's combined with the current.
+!!! info
+    Each time you add a predicate to a `Value` object, it's combined with its current.
 
 ```python
 from power_events.conditions import Value
 
-desserts_minimum_selection = Value("menu.dessert").contains("parfait", "crepes", "cookie")
+desserts_minimum_selection = Value("menu.desserts").contains("parfait", "crepes", "cookie")
 parfait_price_cond = Value("menu.desserts.parfait.price").match(lambda price: 0 < price < 10)
 
 event = {
@@ -103,10 +104,10 @@ assert (desserts_minimum_selection & parfait_price_cond).check(event)
 
 ### Mapping
 
-Sometimes, the value in event has been serialized to simplify the format, like date passed as timestamp or iso format.
+Sometimes, the value in the event has been serialized to simplify the format, like date passed as timestamp or iso format.
 You can provide a mapper, to choose how the value will be check.
 
-An example with date, the menu carte should be the menu of the week. But, the date is represented as a string.
+An example with a date, the menu carte should be the menu of the week. But, the date is represented as a string.
 
 ```python
 from datetime import datetime, timedelta
@@ -148,7 +149,7 @@ To have something like this:
 
     from power_events.conditions import Value
 
-    desserts_minimum_selection = Value("menu.dessert").contains("parfait", "crepes", "cookie")
+    desserts_minimum_selection = Value("menu.desserts").contains("parfait", "crepes", "cookie")
 
     def valid_range_price(price: Union[float, int]) -> bool:
         return 0 < price < 10
