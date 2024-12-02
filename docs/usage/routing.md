@@ -4,7 +4,7 @@ Now we have the basis, let's deep dive a bit further to have a global view of th
 
 ## Options
 
-When declaring a event resolver, some options can be passed depending on you needs.
+When declaring an event resolver, some options can be passed depending on you needs.
 !!! tip
     If you feel like some options or functionalities are missing, feel free to open
     an [issue](https://github.com/mLetrone/power-events/issues){target="_blank"} :smile:!
@@ -69,8 +69,8 @@ The option `allow_multiple_route` at resolver definition can be passed, this way
 
 Because all events may not have to be processed by your application, by default **power-events** allow it.
 
-Of course, you can raise an error otherwise when an event doesn't meet any route. same as before, just an option.
-Pass `allow_no_route`to `False`, and it's done!
+Of course, you can raise an error otherwise when an event doesn't meet any route. Same as before, just an option.
+Pass `allow_no_route` to `False`, and it's done!
 
 === "Default"
     ```python
@@ -142,7 +142,7 @@ def handle_route_1(event: dict) -> Any:
 ```
 
 But often, business logic is not that simple.
-It needs to rely on more that one field, and much, much, much more complex and subtil condition.
+It needs to rely on more that one field, and much, much, much more complex and subtle condition.
 
 **No Problem!**
 

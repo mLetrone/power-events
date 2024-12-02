@@ -91,7 +91,7 @@ assert app.resolve({
 ```
 ### Complex conditions
 
-_in depth field condition and condition combinations_
+_In depth field condition and condition combinations_
 
 ```python
 from power_events import EventResolver
