@@ -75,7 +75,7 @@ jobs:
       - run: pip install commitizen
 
       - name: "Generate release body"
-        run: cz changelog --incremental --dry-run > note.md
+        run: ./script/get_latest_changes.py > note.md
 
       - name: "Create Github release"
         uses: ncipollo/release-action@v1
