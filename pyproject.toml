@@ -8,7 +8,7 @@ dynamic = ["version"]
 authors = [
     { name = "mathieu LETRONE", email = "mathieu.letrone@gmail.com" },
 ]
-description = "Add your description here"
+description = "Take control of your event routing."
 readme = "README.md"
 license = { file = "LICENSE" }
 
@@ -25,6 +25,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: Implementation :: CPython",
+    "Intended Audience :: Developers",
     "Topic :: Utilities",
     "Typing :: Typed",
 ]
@@ -33,6 +34,14 @@ requires-python = ">=3.9"
 dependencies = [
     "maypy>=1.1.2",
 ]
+
+[project.urls]
+"Homepage" = "https://pypi.org/project/power-events/"
+"Documentation" = "https://mletrone.github.io/power-events/"
+"Changelog" = "https://mletrone.github.io/power-events/changelog"
+"Source" = "https://github.com/mLetrone/power-events"
+"Tracker" = "https://github.com/mLetrone/power-events/issues"
+
 
 [tool.hatch.build]
 skip-excluded-dirs = true
