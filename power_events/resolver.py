@@ -1,7 +1,19 @@
 from collections.abc import Sequence
 from dataclasses import dataclass
 from logging import Logger
-from typing import Any, Callable, Container, Dict, List, Mapping, TypeVar
+from typing import (
+    Any,
+    Callable,
+    Container,
+    Dict,
+    List,
+    Mapping,
+    Optional,
+    Type,
+    TypeVar,
+    Union,
+    overload,
+)
 
 from maypy.predicates import is_empty
 from typing_extensions import Concatenate, ParamSpec
@@ -12,6 +24,7 @@ from .exceptions import MultipleRoutesError, NoRouteFoundError
 T = TypeVar("T")
 K = TypeVar("K")
 V = TypeVar("V")
+Error = TypeVar("Error", bound=Exception)
 P = ParamSpec("P")
 
 Func = Callable[Concatenate[Dict[Any, Any], P], Any]
@@ -51,6 +64,7 @@ class EventResolver:
             allow_no_route: option to allow no routes on event, otherwise raise `NoRouteFoundError`.
         """
         self._routes: List[EventRoute] = []
+        self._exception_handlers: Dict[Type[Exception], Callable[..., Any]] = {}
         self._allow_multiple_routes = allow_multiple_routes
         self._allow_no_route = allow_no_route
 
@@ -95,6 +109,36 @@ class EventResolver:
 
         return register_route
 
+    @overload
+    def exception_handler(
+        self, exc_type: Type[Error]
+    ) -> Callable[[Callable[[Error], Any]], Callable[[Error], Any]]: ...
+
+    @overload
+    def exception_handler(
+        self, exc_type: Sequence[Type[Exception]]
+    ) -> Callable[[Callable[..., Any]], Callable[..., Any]]: ...
+
+    def exception_handler(
+        self, exc_type: Union[Type[Error], Sequence[Type[Error]]]
+    ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
+        """Register a function to handle certain exception type.
+
+        Parameters:
+            exc_type: exception type to handle.
+                Could be either a unique exception type or a list of types.
+        """
+
+        def register_exception(fn: Callable[..., Any]) -> Callable[..., Any]:
+            if isinstance(exc_type, Sequence):
+                for exc in exc_type:
+                    self._exception_handlers[exc] = fn
+            else:
+                self._exception_handlers[exc_type] = fn
+            return fn
+
+        return register_exception
+
     def resolve(self, event: Mapping[Any, V]) -> Sequence[Any]:
         """Resolve the event to the matching routes and execute their functions.
 
@@ -102,10 +146,34 @@ class EventResolver:
             event: The event to resolve.
         """
         available_routes = [route for route in self._routes if route.match(event)]
-        self._handle_not_found(event, available_routes)
-        self._handle_multiple_routes(event, available_routes)
+        try:
+            self._handle_not_found(event, available_routes)
+            self._handle_multiple_routes(event, available_routes)
 
-        return [route.func(event) for route in available_routes]
+            return [route.func(event) for route in available_routes]
+
+        except Exception as exc:
+            handler = self._lookup_exception_handler(exc)
+            if handler:
+                return [handler(exc)]
+
+            raise
+
+    def _handle_not_found(self, event: Mapping[Any, V], available_routes: List[EventRoute]) -> None:
+        """Handle cases where no routes match the event.
+
+        Args:
+            event: The event to resolve.
+            available_routes: The list of matching routes.
+
+        Raises:
+            NoRouteFoundError: If no routes are found and not allowed.
+        """
+        if is_empty(available_routes):
+            if not self._allow_no_route:
+                raise NoRouteFoundError(event, [route.name for route in self._routes])
+
+            logger.warning("No routes for this event")  # pragma: no cover
 
     def _handle_multiple_routes(
         self, event: Mapping[Any, V], available_routes: List[EventRoute]
@@ -124,17 +192,10 @@ class EventResolver:
                 raise MultipleRoutesError(event, [route.name for route in available_routes])
             logger.warning("Multiple routes for this event")  # pragma: no cover
 
-    def _handle_not_found(self, event: Mapping[Any, V], available_routes: List[EventRoute]) -> None:
-        """Handle cases where no routes match the event.
+    def _lookup_exception_handler(self, exc: Exception) -> Optional[Callable[[Exception], Any]]:
+        """Lookup the handler for the exception using Method Resolution Order, for matching against base exception."""
+        for cls in type(exc).__mro__:
+            if cls in self._exception_handlers:
+                return self._exception_handlers[cls]
 
-        Args:
-            event: The event to resolve.
-            available_routes: The list of matching routes.
-
-        Raises:
-            NoRouteFoundError: If no routes are found and not allowed.
-        """
-        if is_empty(available_routes):
-            if not self._allow_no_route:
-                raise NoRouteFoundError(event, [route.name for route in self._routes])
-            logger.warning("No routes for this event")  # pragma: no cover
+        return None
