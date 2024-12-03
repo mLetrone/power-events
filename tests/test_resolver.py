@@ -30,6 +30,28 @@ class TestResolver:
         with pytest.raises(NoRouteFoundError):
             app.resolve({"a": 1})
 
+    def test_resolve_should_do_nothing_when_no_route(self) -> None:
+        app = EventResolver()
+
+        @app.equal("a.b", "TEST")
+        def handle_test(_event: Mapping[str, Any]) -> str:
+            return "lol"
+
+        assert app.resolve({"a": 1}) == []
+
+    def test_resolve_should_use_fallback_route_when_no_route_match(self) -> None:
+        app = EventResolver()
+
+        @app.equal("a.b", "TEST")
+        def handle_test(_event: Mapping[str, Any]) -> str:
+            return "lol"
+
+        @app.fallback
+        def fallback(_event: dict[str, str]) -> str:
+            return "fallback"
+
+        assert app.resolve({"a": 1}) == ["fallback"]
+
     def test_resolve_should_raise_multiple_route_when_set_to_disallow(self) -> None:
         app = EventResolver(allow_multiple_routes=False)
 
