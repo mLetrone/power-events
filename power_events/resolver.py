@@ -64,6 +64,7 @@ class EventResolver:
             allow_no_route: option to allow no routes on event, otherwise raise `NoRouteFoundError`.
         """
         self._routes: List[EventRoute] = []
+        self._fallback_route: Optional[EventRoute] = None
         self._exception_handlers: Dict[Type[Exception], Callable[..., Any]] = {}
         self._allow_multiple_routes = allow_multiple_routes
         self._allow_no_route = allow_no_route
@@ -139,13 +140,33 @@ class EventResolver:
 
         return register_exception
 
+    @overload
+    def fallback(self) -> Callable[[Func[P]], Func[P]]: ...
+
+    @overload
+    def fallback(self, func: Func[P]) -> Func[P]: ...
+
+    def fallback(
+        self, func: Optional[Func[P]] = None
+    ) -> Union[Callable[[Func[P]], Func[P]], Func[P]]:
+        """Register a fallback route if no registered routes match the event."""
+
+        def register_fallback(fn: Func[P]) -> Func[P]:
+            self._fallback_route = EventRoute(fn, Value.root().match(lambda x: True))
+            return fn
+
+        if func is None:
+            return register_fallback  # pragma: no cover
+
+        return register_fallback(func)
+
     def resolve(self, event: Mapping[Any, V]) -> Sequence[Any]:
         """Resolve the event to the matching routes and execute their functions.
 
         Args:
             event: The event to resolve.
         """
-        available_routes = [route for route in self._routes if route.match(event)]
+        available_routes = self._find_matching_routes(event)
         try:
             self._handle_not_found(event, available_routes)
             self._handle_multiple_routes(event, available_routes)
@@ -158,6 +179,16 @@ class EventResolver:
                 return [handler(exc)]
 
             raise
+
+    def _find_matching_routes(self, event: Mapping[Any, V]) -> List[EventRoute]:
+        """Find the routes matching the event."""
+        matching_routes = [route for route in self._routes if route.match(event)]
+
+        if is_empty(matching_routes) and self._fallback_route:
+            logger.debug("Use fallback route.")
+            return [self._fallback_route]
+
+        return matching_routes
 
     def _handle_not_found(self, event: Mapping[Any, V], available_routes: List[EventRoute]) -> None:
         """Handle cases where no routes match the event.
