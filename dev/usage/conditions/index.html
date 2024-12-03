@@ -251,6 +251,24 @@
   
 
       
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../changelog/" class="md-tabs__link">
+          
+  
+  About
+
+        </a>
+      </li>
+    
+  
+
+      
     </ul>
   </div>
 </nav>
@@ -483,7 +501,7 @@
         <li class="md-nav__item">
   <a href="#whats-a-condition" class="md-nav__link">
     <span class="md-ellipsis">
-      What's a condition ?
+      What's a condition?
     </span>
   </a>
   
@@ -849,6 +867,74 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            About
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Changelog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -878,7 +964,7 @@
         <li class="md-nav__item">
   <a href="#whats-a-condition" class="md-nav__link">
     <span class="md-ellipsis">
-      What's a condition ?
+      What's a condition?
     </span>
   </a>
   
@@ -986,7 +1072,7 @@ It can combine multiple conditions the same way it's possible in <a href="https:
 </div>
 </div>
 </div>
-<h2 id="whats-a-condition">What's a condition ?<a class="headerlink" href="#whats-a-condition" title="Permanent link">&para;</a></h2>
+<h2 id="whats-a-condition">What's a condition?<a class="headerlink" href="#whats-a-condition" title="Permanent link">&para;</a></h2>
 <p>A condition is defining by <strong>two</strong> things:</p>
 <ul>
 <li>
@@ -1001,7 +1087,7 @@ It can combine multiple conditions the same way it's possible in <a href="https:
 With which, we define the value path in the event to check under the predicate given.</p>
 <h3 id="path">Path<a class="headerlink" href="#path" title="Permanent link">&para;</a></h3>
 <p>The path to a value is a string containing all the keys to reach it inside an event.
-It allows get a value at any depth level.</p>
+It allows to get a value at any depth level.</p>
 <p>Each key should be separated by a <code>.</code>,
 otherwise it may:</p>
 <ul>
@@ -1021,10 +1107,13 @@ otherwise it may:</p>
 <h3 id="predicate">Predicate<a class="headerlink" href="#predicate" title="Permanent link">&para;</a></h3>
 <p>To add predicate at the value check, you can either use built-in method (like <a href="../../api/value/#conditions.value.Value.equals"><code>equals</code></a>, <a href="../../api/value/#conditions.value.Value.one_of"><code>one_of</code></a>, etc.),
 or using yours, passing it to the method <a href="../../api/value/#conditions.value.Value.match"><code>match</code></a>.</p>
-<p>Each time you add a predicate, it's combined with the current.</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Each time you add a predicate to a <code>Value</code> object, it's combined with its current.</p>
+</div>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">power_events.conditions</span> <span class="kn">import</span> <span class="n">Value</span>
 
-<span class="n">desserts_minimum_selection</span> <span class="o">=</span> <span class="n">Value</span><span class="p">(</span><span class="s2">&quot;menu.dessert&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;parfait&quot;</span><span class="p">,</span> <span class="s2">&quot;crepes&quot;</span><span class="p">,</span> <span class="s2">&quot;cookie&quot;</span><span class="p">)</span>
+<span class="n">desserts_minimum_selection</span> <span class="o">=</span> <span class="n">Value</span><span class="p">(</span><span class="s2">&quot;menu.desserts&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;parfait&quot;</span><span class="p">,</span> <span class="s2">&quot;crepes&quot;</span><span class="p">,</span> <span class="s2">&quot;cookie&quot;</span><span class="p">)</span>
 <span class="n">parfait_price_cond</span> <span class="o">=</span> <span class="n">Value</span><span class="p">(</span><span class="s2">&quot;menu.desserts.parfait.price&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="k">lambda</span> <span class="n">price</span><span class="p">:</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">price</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">)</span>
 
 <span class="n">event</span> <span class="o">=</span> <span class="p">{</span>
@@ -1059,9 +1148,9 @@ or using yours, passing it to the method <a href="../../api/value/#conditions.va
 </ul>
 </div>
 <h3 id="mapping">Mapping<a class="headerlink" href="#mapping" title="Permanent link">&para;</a></h3>
-<p>Sometimes, the value in event has been serialized to simplify the format, like date passed as timestamp or iso format.
+<p>Sometimes, the value in the event has been serialized to simplify the format, like date passed as timestamp or iso format.
 You can provide a mapper, to choose how the value will be check.</p>
-<p>An example with date, the menu carte should be the menu of the week. But, the date is represented as a string.</p>
+<p>An example with a date, the menu carte should be the menu of the week. But, the date is represented as a string.</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 
 <span class="kn">from</span> <span class="nn">power_events.conditions</span> <span class="kn">import</span> <span class="n">Value</span>
@@ -1098,7 +1187,7 @@ But it's also possible de combine the resulting condition, and so on, to have a 
 
 <span class="kn">from</span> <span class="nn">power_events.conditions</span> <span class="kn">import</span> <span class="n">Value</span>
 
-<span class="n">desserts_minimum_selection</span> <span class="o">=</span> <span class="n">Value</span><span class="p">(</span><span class="s2">&quot;menu.dessert&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;parfait&quot;</span><span class="p">,</span> <span class="s2">&quot;crepes&quot;</span><span class="p">,</span> <span class="s2">&quot;cookie&quot;</span><span class="p">)</span>
+<span class="n">desserts_minimum_selection</span> <span class="o">=</span> <span class="n">Value</span><span class="p">(</span><span class="s2">&quot;menu.desserts&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;parfait&quot;</span><span class="p">,</span> <span class="s2">&quot;crepes&quot;</span><span class="p">,</span> <span class="s2">&quot;cookie&quot;</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">valid_range_price</span><span class="p">(</span><span class="n">price</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="k">return</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">price</span> <span class="o">&lt;</span> <span class="mi">10</span>
