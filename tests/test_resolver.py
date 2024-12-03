@@ -1,5 +1,5 @@
 from collections.abc import Mapping
-from typing import Any, Dict
+from typing import Any, Dict, Union
 
 import pytest
 
@@ -96,6 +96,90 @@ class TestResolver:
         res = app.resolve(event)
 
         assert res == ["test", "d"]
+
+    def test_should_not_catch_exception_when_no_exception_handler(self) -> None:
+        app = EventResolver()
+
+        @app.one_of("a", ["BAR", "FOO"])
+        def handle_contain(_event: Dict[str, Any]) -> str:
+            return "BAR"
+
+        @app.contain("a", "b", "c")
+        def handle_foo(_event: Dict[str, Any]) -> str:
+            raise ValueError("test")
+
+        with pytest.raises(ValueError, match="test"):
+            app.resolve({"a": ["b", "c"]})
+
+    def test_should_not_catch_exception_when_no_exception_handler_for_this_error(self) -> None:
+        app = EventResolver()
+
+        @app.exception_handler(TypeError)
+        def handle_value_error(exception: TypeError) -> str:
+            return f"Something went wrong with value... {exception}"
+
+        @app.contain("a", "b", "c")
+        def handle_foo(_event: Dict[str, Any]) -> str:
+            raise ValueError("test")
+
+        with pytest.raises(ValueError, match="test"):
+            app.resolve({"a": ["b", "c"]})
+
+    def test_should_exception_handler_when_error_raised(self) -> None:
+        app = EventResolver()
+
+        @app.exception_handler(ValueError)
+        def handle_value_error(exception: ValueError) -> str:
+            return f"Something went wrong with value... {exception}"
+
+        @app.one_of("a", ["BAR", "FOO"])
+        def handle_contain(_event: Dict[str, Any]) -> str:
+            return "BAR"
+
+        @app.contain("a", "b", "c")
+        def handle_foo(_event: Dict[str, Any]) -> str:
+            raise ValueError("test")
+
+        assert app.resolve({"a": ["b", "c"]}) == ["Something went wrong with value... test"]
+
+    def test_should_have_registered_all_exceptions_has_handled_when_passing_exception_list(
+        self,
+    ) -> None:
+        app = EventResolver()
+
+        @app.exception_handler([ValueError, TypeError])
+        def handle_value_error(exception: Union[ValueError, TypeError]) -> str:
+            return f"Something went wrong with error of {type(exception).__name__}..."
+
+        @app.one_of("a", ["BAR", "FOO"])
+        def handle_contain(_event: Dict[str, Any]) -> str:
+            raise TypeError()
+
+        @app.contain("a", "b", "c")
+        def handle_foo(_event: Dict[str, Any]) -> str:
+            raise ValueError()
+
+        assert app.resolve({"a": ["b", "c"]}) == [
+            "Something went wrong with error of ValueError..."
+        ]
+        assert app.resolve({"a": "BAR"}) == ["Something went wrong with error of TypeError..."]
+
+    def test_should_handle_exception_even_if_base_exception_registered(self) -> None:
+        class CustomValueError(ValueError): ...
+
+        app = EventResolver()
+
+        @app.exception_handler(ValueError)
+        def handle_value_error(exception: ValueError) -> str:
+            return f"Something went wrong with error of {type(exception).__name__}..."
+
+        @app.contain("a", "b", "c")
+        def handle_foo(_event: Dict[str, Any]) -> str:
+            raise CustomValueError()
+
+        assert app.resolve({"a": ["b", "c"]}) == [
+            "Something went wrong with error of CustomValueError..."
+        ]
 
     def test_readme_simple(self) -> None:
         app = EventResolver()
