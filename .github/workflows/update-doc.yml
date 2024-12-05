@@ -1,0 +1,46 @@
+name: update-doc
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        required: true
+        description: "Version of documentation to update"
+        type: string
+
+jobs:
+  docs:
+    name: "Update documentation"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    if: "github.ref =='refs/heads/main'"
+    steps:
+      - name: Checkout gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+
+      - name: Checkout current branch
+        uses: actions/checkout@v4
+
+      - name: "set up env"
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: |
+            pyproject.toml
+
+      - name: "Install doc deps"
+        run: uv sync --only-group docs
+
+      - name: "Configure Git Credentials"
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email github-actions[bot]@users.noreply.github.com
+
+      - name: "Get version"
+        run: echo "TAG=${{ github.event.inputs.version }}">>$GITHUB_ENV
+
+      - name: "updating version $TAG"
+        run: uv run mike deploy --push $TAG
