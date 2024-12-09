@@ -189,6 +189,8 @@ name = "cz_customize" # use custom config
 schema = "<emoji> <type>: <body>"
 schema_pattern = ":.*:(\\s)(feat|fix|perf|refactor)(\\(\\S+\\))?!?:( [^\n\r]+)((\n\n.*)|(\\s*))?$"
 commit_parser = ":.*:\\s(?P<change_type>feat|fix|refactor|perf)(\\(\\S+\\))?!?:\\s(?P<message>.*)"
+bump_pattern = "^:.*:\\s(break|feat|fix|hotfix)"
+bump_map = {"break" = "MAJOR", "feat" = "MINOR", "fix" = "PATCH", "hotfix" = "PATCH"}
 
 [tool.commitizen.change_type_map]
 feat = ":sparkles: Features"
