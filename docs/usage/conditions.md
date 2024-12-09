@@ -1,4 +1,4 @@
-The true power of **Power-event** lays on its condition system.
+The true power of **Power-event** lies on its condition system.
 It can combine multiple conditions the same way it's possible in [Boolean Algebra](https://en.wikipedia.org/wiki/Boolean_algebra).
 
 This way, you can use these operators:
@@ -29,9 +29,9 @@ This way, you can use these operators:
 
 ## What's a condition?
 
-A condition is defining by **two** things:
+A condition is defined by **two** things:
 
-- A set of predicates to a certain value (precisely a _path to value in the event_), in order to verify if the event matches it.
+- A set of predicates to a certain value (precisely a _path to value in the event_), to verify if the event matches it.
 
 - And as said previously, the ability to be compatible with *Boolean Algebra*.
 
@@ -43,7 +43,7 @@ With which, we define the value path in the event to check under the predicate g
 ### Path
 
 The path to a value is a string containing all the keys to reach it inside an event.
-It allows to get a value at any depth level.
+It allows getting a value at any depth level, whether the value is there or not.
 
 Each key should be separated by a `.`,
 otherwise it may:
@@ -105,9 +105,9 @@ assert (desserts_minimum_selection & parfait_price_cond).check(event)
 ### Mapping
 
 Sometimes, the value in the event has been serialized to simplify the format, like date passed as timestamp or iso format.
-You can provide a mapper, to choose how the value will be check.
+You can provide a mapper, to choose how the value will be checked.
 
-An example with a date, the menu carte should be the menu of the week. But, the date is represented as a string.
+An example with a date, the menu carte should be the menu of the week. But the date is represented as a string.
 
 ```python
 from datetime import datetime, timedelta
@@ -139,7 +139,7 @@ assert date_cond.check(event)
 ### Combination
 
 As show before, it's possible to combine `Value` (using And or Or logic).
-But it's also possible de combine the resulting condition, and so on, to have a tree of conditions.
+But it's also possible to combine the resulting condition, and so on, to have a tree of conditions.
 
 To have something like this:
 

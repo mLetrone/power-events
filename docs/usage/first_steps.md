@@ -36,7 +36,7 @@ print(app.resolve({"type": "power-event"}))
 
 Here `app` will be an instance of [`EventResolver`](../api/resolver.md/#resolver.EventResolver), it's the main entrypoint to define our event routes.
 
-### Step 2: create a event route operation
+### Step 2: create an event route operation
 
 #### Path
 
@@ -68,7 +68,7 @@ print(app.resolve({"type": "power-event"}))
 # ["Hello from power-event type event"]
 ```
 
-`@app.equal("type", "power-event")` tells at **Power-Events** that the function define below to be triggered if an event with the value at path `type` is equals at `power-event`.
+`@app.equal("type", "power-event")` tells at **Power-Events** that the function defines below to be triggered if an event with the value at path `type` is equals at `power-event`.
 
 !!! info "About `@decorator`"
 
