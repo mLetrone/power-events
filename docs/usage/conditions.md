@@ -54,12 +54,22 @@ otherwise it may:
     - Use consecutive separators. `menu..dessert` :x:
 - Or worst, not work as expected!
 
+
 ```python
+from power_events.conditions import ValuePath
+
+event = {}
+
 # this path
-path = "menu.desserts.parfait"
+value = ValuePath("menu.desserts.parfait").get_from(event, default=None)
+
 # is equivalent to this with the event
-event["menu"]["desserts"]["parfait"]
+value = event.get("menu", {}).get("desserts", {}).get("parfait")
 ```
+
+I don't know about you, but I prefer to read the first way with the `ValuePath`, don't you?
+
+_yep totally biased :shushing_face:_
 
 ### Predicate
 
