@@ -650,6 +650,30 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Route">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#built-in-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Built-in conditions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom conditions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -991,6 +1015,30 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Route">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#built-in-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Built-in conditions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom conditions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -1014,7 +1062,7 @@
 <h1 id="event-handling">Event handling<a class="headerlink" href="#event-handling" title="Permanent link">&para;</a></h1>
 <p>Now we have the basis, let's deep dive a bit further to have a global view of the features.</p>
 <h2 id="options">Options<a class="headerlink" href="#options" title="Permanent link">&para;</a></h2>
-<p>When declaring an event resolver, some options can be passed depending on you needs.</p>
+<p>When declaring an event resolver, some options can be passed depending on you need.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>If you feel like some options or functionalities are missing, feel free to open
@@ -1024,7 +1072,7 @@ an <a href="https://github.com/mLetrone/power-events/issues" target="_blank">iss
 <h3 id="multiple-routes">Multiple routes<a class="headerlink" href="#multiple-routes" title="Permanent link">&para;</a></h3>
 <p>To prevent unexpected behaviour, by default an event meeting conditions of different routes, will raise <code>MultipleRouteError</code>.
 However, in case of intended multiple routes conditions matching an event.
-The option <code>allow_multiple_route</code> at resolver definition can be passed, this way, all routes passing will be called.</p>
+The option <code>allow_multiple_route</code> at resolver definition can be passed; this way, all routes passing will be called.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Default</label><label for="__tabbed_1_2">With <code>allow_multiple_route</code> option</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1129,13 +1177,14 @@ Pass <code>allow_no_route</code> to <code>False</code>, and it's done!</p>
 </div>
 </div>
 <h2 id="route">Route<a class="headerlink" href="#route" title="Permanent link">&para;</a></h2>
+<h3 id="built-in-conditions">Built-in conditions<a class="headerlink" href="#built-in-conditions" title="Permanent link">&para;</a></h3>
 <p>As saw before, it is possible to register a route using built-in condition preset.</p>
 <ul>
 <li><a href="../../api/resolver/#resolver.EventResolver.equal">equal</a>: when one field should be equal.</li>
 <li><a href="../../api/resolver/#resolver.EventResolver.one_of">one_of</a>: when one field should be one of the options.</li>
 <li><a href="../../api/resolver/#resolver.EventResolver.contain">contain</a>: when one field should contain item(s).</li>
 </ul>
-<div class="language-python highlight"><span class="filename">Example</span><pre><span></span><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+<div class="language-python highlight"><span class="filename">Built-in condition route</span><pre><span></span><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 
 <span class="kn">from</span> <span class="nn">power_events</span> <span class="kn">import</span> <span class="n">EventResolver</span>
 
@@ -1145,17 +1194,18 @@ Pass <code>allow_no_route</code> to <code>False</code>, and it's done!</p>
 <span class="k">def</span> <span class="nf">handle_route_1</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;route logic.&quot;&quot;&quot;</span>
 </code></pre></div>
+<h3 id="custom-conditions">Custom conditions<a class="headerlink" href="#custom-conditions" title="Permanent link">&para;</a></h3>
 <p>But often, business logic is not that simple.
-It needs to rely on more that one field, and much, much, much more complex and subtle condition.</p>
+It needs to rely on more than one field, and much, much, much more complex and subtle condition.</p>
 <p><strong>No Problem!</strong></p>
-<p>The core has been design to meet any condition without concession.</p>
+<p>The core has been designed to meet any condition without concession.</p>
 <div class="admonition info">
 <p class="admonition-title">Info</p>
-<p>For that, if you haven't check the section about <a href="../conditions/">condition</a>, check it out before continuing <img alt="😉" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f609.svg" title=":wink:" />.</p>
+<p>For that, if you haven't checked the section about <a href="../conditions/">condition</a>, check it out before continuing <img alt="😉" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f609.svg" title=":wink:" />.</p>
 </div>
 <p>We can use custom conditions,
  using either built-in predicate function or your own,
- and combine it with on different event fields.
+ and combine it with different event fields.
 As another possibility, you can also perform a condition over the whole event itself by the <a href="../../api/value/#conditions.value.Value.root"><code>Value.root</code></a>.</p>
 <p><a href="../../api/resolver/#resolver.EventResolver.when"><code>when</code></a> is here to respond to any use case above. All condition concepts are usable!</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">date</span>

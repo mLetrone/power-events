@@ -2,46 +2,46 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://docs.power-events.dev/latest/</loc>
-         <lastmod>2024-12-05</lastmod>
+         <lastmod>2024-12-09</lastmod>
     </url>
     <url>
          <loc>https://docs.power-events.dev/latest/changelog/</loc>
-         <lastmod>2024-12-05</lastmod>
+         <lastmod>2024-12-09</lastmod>
     </url>
     <url>
          <loc>https://docs.power-events.dev/latest/installation/</loc>
-         <lastmod>2024-12-05</lastmod>
+         <lastmod>2024-12-09</lastmod>
     </url>
     <url>
          <loc>https://docs.power-events.dev/latest/api/conditions/</loc>
-         <lastmod>2024-12-05</lastmod>
+         <lastmod>2024-12-09</lastmod>
     </url>
     <url>
          <loc>https://docs.power-events.dev/latest/api/exception/</loc>
-         <lastmod>2024-12-05</lastmod>
+         <lastmod>2024-12-09</lastmod>
     </url>
     <url>
          <loc>https://docs.power-events.dev/latest/api/resolver/</loc>
-         <lastmod>2024-12-05</lastmod>
+         <lastmod>2024-12-09</lastmod>
     </url>
     <url>
          <loc>https://docs.power-events.dev/latest/api/value/</loc>
-         <lastmod>2024-12-05</lastmod>
+         <lastmod>2024-12-09</lastmod>
     </url>
     <url>
          <loc>https://docs.power-events.dev/latest/usage/</loc>
-         <lastmod>2024-12-05</lastmod>
+         <lastmod>2024-12-09</lastmod>
     </url>
     <url>
          <loc>https://docs.power-events.dev/latest/usage/conditions/</loc>
-         <lastmod>2024-12-05</lastmod>
+         <lastmod>2024-12-09</lastmod>
     </url>
     <url>
          <loc>https://docs.power-events.dev/latest/usage/first_steps/</loc>
-         <lastmod>2024-12-05</lastmod>
+         <lastmod>2024-12-09</lastmod>
     </url>
     <url>
          <loc>https://docs.power-events.dev/latest/usage/routing/</loc>
-         <lastmod>2024-12-05</lastmod>
+         <lastmod>2024-12-09</lastmod>
     </url>
 </urlset>
