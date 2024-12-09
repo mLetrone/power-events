@@ -13,7 +13,7 @@ from maypy.predicates import (
     neg,
     one_of,
 )
-from typing_extensions import Self, override
+from typing_extensions import Self, deprecated, override
 
 from power_events.conditions.condition import And, Condition, Event, Or, V
 from power_events.exceptions import NoPredicateError, ValueAbsentError
@@ -52,7 +52,7 @@ class ValuePath(str):
 
         return instance
 
-    def get(
+    def get_from(
         self,
         mapping: Mapping[Any, V],
         default: Union[V, None, Absent] = ABSENT,
@@ -92,6 +92,35 @@ class ValuePath(str):
                     raise ValueAbsentError(self, key, mapping)
                 return default
         return value
+
+    @deprecated("""
+    `get` is deprecated, use `get_from` instead.
+    """)
+    def get(
+        self,
+        mapping: Mapping[Any, V],
+        default: Union[V, None, Absent] = ABSENT,
+        *,
+        raise_if_absent: bool = False,
+    ) -> Union[Any, None, Absent]:
+        """Get the value describe by the path inside mapping object.
+
+        `get` is deprecated, use `get_from` instead.
+
+        The value returns can be the sentinel `ABSENT` to differentiate real `None` value of default.
+
+        Args:
+            mapping: Dictionary or mapping object to lookup.
+            default: Default value if key not found. By default return the sentinel value `ABSENT`.
+            raise_if_absent: Flag to raise `ValueAbsentError` if missing key. Default `False`
+
+        Note:
+            Support both string and integer keys.
+
+        Raises:
+            ValueAbsentError: if parameter `raise_if_absent` set, and key is missing.
+        """
+        return self.get_from(mapping, default, raise_if_absent=raise_if_absent)
 
     @staticmethod
     def _validation(path: str, sep: str) -> None:
@@ -162,7 +191,7 @@ class Value(Condition):
         if self._predicate is MISSING:
             raise NoPredicateError(self.path)
 
-        if (val := self.path.get(event, raise_if_absent=raise_if_absent)) is ABSENT:
+        if (val := self.path.get_from(event, raise_if_absent=raise_if_absent)) is ABSENT:
             return False
 
         return self._predicate(Maybe.of(val).map(self.mapper).or_else(val))

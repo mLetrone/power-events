@@ -47,23 +47,23 @@ class TestValuePath:
         assert ValuePath("").get({"a": 1}) == {"a": 1}
 
     def test_get_should_return_value(self) -> None:
-        assert ValuePath("a.b").get({"a": {"b": 2}}) == 2
+        assert ValuePath("a.b").get_from({"a": {"b": 2}}) == 2
 
     def test_get_should_handle_int_key(self) -> None:
-        assert ValuePath("a.b.1").get({"a": {"b": {1: "int"}}}) == "int"
-        assert ValuePath("a.b.1").get({"a": {"b": {"1": "str"}}}) == "str"
+        assert ValuePath("a.b.1").get_from({"a": {"b": {1: "int"}}}) == "int"
+        assert ValuePath("a.b.1").get_from({"a": {"b": {"1": "str"}}}) == "str"
 
     def test_get_should_return_absent_sentinel_by_default_when_no_value_at_path(self) -> None:
-        assert ValuePath("a.b").get({"a": {"c": 2}}) is ABSENT
+        assert ValuePath("a.b").get_from({"a": {"c": 2}}) is ABSENT
 
     def test_get_should_return_default_value_when_given_and_value_absent(self) -> None:
         path = ValuePath("a.b")
-        assert path.get({}, None) is None
-        assert path.get({"a": 1}, None) is None
+        assert path.get_from({}, None) is None
+        assert path.get_from({"a": 1}, None) is None
 
     def test_get_should_raise_error_when_no_value_and_flag_set(self) -> None:
         with pytest.raises(ValueAbsentError) as excinfo:
-            ValuePath("foo.bar").get({"foo": {}}, raise_if_absent=True)
+            ValuePath("foo.bar").get_from({"foo": {}}, raise_if_absent=True)
             assert excinfo.value.missing_key == "bar"
             assert excinfo.value.path == "foo.bar"
 
