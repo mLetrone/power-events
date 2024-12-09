@@ -192,3 +192,75 @@ def handle_field(event: dict) -> None:
 def handle_today_creation(event: dict) -> None:
     """Route if event body date is today and it's a creation"""
 ```
+
+### Fallback
+
+As mentioned above, we can have no routes that match our event, and choose whether to raise an error or not.
+Another way is to use the `fallback` decorator to override the other behaviours.
+
+The function will only be called when **no route has been found** to handle the current event.
+
+```python title="Define fallback route"
+from typing import Any
+
+from power_events import EventResolver
+
+app = EventResolver()
+
+@app.equal("body.name", "creation")
+def handle_creation(event: dict[str, Any]) -> str:
+    return "creation"
+
+@app.fallback()
+def fallback(event: dict[str, Any]) -> str:
+    return "fallback"
+```
+
+## Exception handling
+
+You can add a custom exception handler with any Python exception.
+This allows handling this kind of exception globally and not inside each of your routes.
+
+Let's say you have to deal with `ValidationError` that your code (or used library) might raise.
+You want to add a specific behaviour when this occurs (default value, log, REST API call, metrics, send message, etc.).
+
+
+```python title="Exception handling"
+from logging import Logger
+
+from power_events import EventResolver
+from power_events.conditions import ValuePath
+
+logger = Logger("power-events")
+
+
+class ValidationError(Exception):
+    pass
+
+
+app = EventResolver()
+
+
+@app.exception_handler(ValidationError)
+def validation_exception_handler(exc: ValidationError) -> None:
+    """Your handling logic"""
+    logger.error(f"Malformed event: {exc}")
+
+
+@app.equal("body.name", "creation")
+def handle_creation(event: dict):
+    sender = ValuePath("body.sender").get_from(event)
+    if sender == "unknown":
+        raise ValidationError("unknown sender")
+
+    return {"sender": sender, "status": "created"}
+```
+
+Here, if we get an event where the sender is `"unknown"`, the route will raise a `ValidationError`.
+But `validation_exception_handler` will handle it.
+
+!!! info
+    The `exception_handler` can also:
+    
+    - support passing a list of exception types to be handled with one handler.
+    - handle exception like `except` (resolve inheritance).
