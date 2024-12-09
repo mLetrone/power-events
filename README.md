@@ -45,7 +45,7 @@ It simplifies the organization of complex events by applying specific routing ru
 pip install power-events
 ```
 
-That's all ! _Ready to use_
+That's all! _Ready to use_
 <!-- --8<-- [start:body] -->
 ## Examples
 ---

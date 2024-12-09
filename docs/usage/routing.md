@@ -4,7 +4,7 @@ Now we have the basis, let's deep dive a bit further to have a global view of th
 
 ## Options
 
-When declaring an event resolver, some options can be passed depending on you needs.
+When declaring an event resolver, some options can be passed depending on you need.
 !!! tip
     If you feel like some options or functionalities are missing, feel free to open
     an [issue](https://github.com/mLetrone/power-events/issues){target="_blank"} :smile:!
@@ -15,7 +15,7 @@ When declaring an event resolver, some options can be passed depending on you ne
 
 To prevent unexpected behaviour, by default an event meeting conditions of different routes, will raise `MultipleRouteError`.
 However, in case of intended multiple routes conditions matching an event.
-The option `allow_multiple_route` at resolver definition can be passed, this way, all routes passing will be called.
+The option `allow_multiple_route` at resolver definition can be passed; this way, all routes passing will be called.
 
 === "Default"
     ```python
@@ -123,13 +123,15 @@ Pass `allow_no_route` to `False`, and it's done!
 
 ## Route
 
+### Built-in conditions
+
 As saw before, it is possible to register a route using built-in condition preset.
 
 - [equal](../api/resolver.md#resolver.EventResolver.equal): when one field should be equal.
 - [one_of](../api/resolver.md#resolver.EventResolver.one_of): when one field should be one of the options.
 - [contain](../api/resolver.md#resolver.EventResolver.contain): when one field should contain item(s).
 
-```python title="Example"
+```python title="Built-in condition route"
 from typing import Any
 
 from power_events import EventResolver
@@ -141,18 +143,20 @@ def handle_route_1(event: dict) -> Any:
     """route logic."""
 ```
 
+### Custom conditions
+
 But often, business logic is not that simple.
-It needs to rely on more that one field, and much, much, much more complex and subtle condition.
+It needs to rely on more than one field, and much, much, much more complex and subtle condition.
 
 **No Problem!**
 
-The core has been design to meet any condition without concession.
+The core has been designed to meet any condition without concession.
 !!! info
-    For that, if you haven't check the section about [condition](conditions.md), check it out before continuing :wink:.
+    For that, if you haven't checked the section about [condition](conditions.md), check it out before continuing :wink:.
 
 We can use custom conditions,
  using either built-in predicate function or your own,
- and combine it with on different event fields.
+ and combine it with different event fields.
 As another possibility, you can also perform a condition over the whole event itself by the [`Value.root`](../api/value.md#conditions.value.Value.root).
 
 [`when`](../api/resolver.md#resolver.EventResolver.when) is here to respond to any use case above. All condition concepts are usable!
