@@ -1041,7 +1041,7 @@
 
   <h1>Conditions</h1>
 
-<p>The true power of <strong>Power-event</strong> lays on its condition system.
+<p>The true power of <strong>Power-event</strong> lies on its condition system.
 It can combine multiple conditions the same way it's possible in <a href="https://en.wikipedia.org/wiki/Boolean_algebra">Boolean Algebra</a>.</p>
 <p>This way, you can use these operators:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">AND</label><label for="__tabbed_1_2">OR</label><label for="__tabbed_1_3">NOT</label></div>
@@ -1073,10 +1073,10 @@ It can combine multiple conditions the same way it's possible in <a href="https:
 </div>
 </div>
 <h2 id="whats-a-condition">What's a condition?<a class="headerlink" href="#whats-a-condition" title="Permanent link">&para;</a></h2>
-<p>A condition is defining by <strong>two</strong> things:</p>
+<p>A condition is defined by <strong>two</strong> things:</p>
 <ul>
 <li>
-<p>A set of predicates to a certain value (precisely a <em>path to value in the event</em>), in order to verify if the event matches it.</p>
+<p>A set of predicates to a certain value (precisely a <em>path to value in the event</em>), to verify if the event matches it.</p>
 </li>
 <li>
 <p>And as said previously, the ability to be compatible with <em>Boolean Algebra</em>.</p>
@@ -1087,7 +1087,7 @@ It can combine multiple conditions the same way it's possible in <a href="https:
 With which, we define the value path in the event to check under the predicate given.</p>
 <h3 id="path">Path<a class="headerlink" href="#path" title="Permanent link">&para;</a></h3>
 <p>The path to a value is a string containing all the keys to reach it inside an event.
-It allows to get a value at any depth level.</p>
+It allows getting a value at any depth level, whether the value is there or not.</p>
 <p>Each key should be separated by a <code>.</code>,
 otherwise it may:</p>
 <ul>
@@ -1099,11 +1099,18 @@ otherwise it may:</p>
 </li>
 <li>Or worst, not work as expected!</li>
 </ul>
-<div class="language-python highlight"><pre><span></span><code><span class="c1"># this path</span>
-<span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;menu.desserts.parfait&quot;</span>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">power_events.conditions</span> <span class="kn">import</span> <span class="n">ValuePath</span>
+
+<span class="n">event</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c1"># this path</span>
+<span class="n">value</span> <span class="o">=</span> <span class="n">ValuePath</span><span class="p">(</span><span class="s2">&quot;menu.desserts.parfait&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_from</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
 <span class="c1"># is equivalent to this with the event</span>
-<span class="n">event</span><span class="p">[</span><span class="s2">&quot;menu&quot;</span><span class="p">][</span><span class="s2">&quot;desserts&quot;</span><span class="p">][</span><span class="s2">&quot;parfait&quot;</span><span class="p">]</span>
+<span class="n">value</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;menu&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;desserts&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;parfait&quot;</span><span class="p">)</span>
 </code></pre></div>
+<p>I don't know about you, but I prefer to read the first way with the <code>ValuePath</code>, don't you?</p>
+<p><em>yep totally biased <img alt="🤫" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f92b.svg" title=":shushing_face:" /></em></p>
 <h3 id="predicate">Predicate<a class="headerlink" href="#predicate" title="Permanent link">&para;</a></h3>
 <p>To add predicate at the value check, you can either use built-in method (like <a href="../../api/value/#conditions.value.Value.equals"><code>equals</code></a>, <a href="../../api/value/#conditions.value.Value.one_of"><code>one_of</code></a>, etc.),
 or using yours, passing it to the method <a href="../../api/value/#conditions.value.Value.match"><code>match</code></a>.</p>
@@ -1149,8 +1156,8 @@ or using yours, passing it to the method <a href="../../api/value/#conditions.va
 </div>
 <h3 id="mapping">Mapping<a class="headerlink" href="#mapping" title="Permanent link">&para;</a></h3>
 <p>Sometimes, the value in the event has been serialized to simplify the format, like date passed as timestamp or iso format.
-You can provide a mapper, to choose how the value will be check.</p>
-<p>An example with a date, the menu carte should be the menu of the week. But, the date is represented as a string.</p>
+You can provide a mapper, to choose how the value will be checked.</p>
+<p>An example with a date, the menu carte should be the menu of the week. But the date is represented as a string.</p>
 <div class="language-python highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 
 <span class="kn">from</span> <span class="nn">power_events.conditions</span> <span class="kn">import</span> <span class="n">Value</span>
@@ -1178,7 +1185,7 @@ You can provide a mapper, to choose how the value will be check.</p>
 </code></pre></div>
 <h3 id="combination">Combination<a class="headerlink" href="#combination" title="Permanent link">&para;</a></h3>
 <p>As show before, it's possible to combine <code>Value</code> (using And or Or logic).
-But it's also possible de combine the resulting condition, and so on, to have a tree of conditions.</p>
+But it's also possible to combine the resulting condition, and so on, to have a tree of conditions.</p>
 <p>To have something like this:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Code</label><label for="__tabbed_2_2">Graph</label></div>
 <div class="tabbed-content">

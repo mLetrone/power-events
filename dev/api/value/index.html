@@ -783,6 +783,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#conditions.value.ValuePath.get_from" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_from
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#conditions.value.ValuePath.get" class="md-nav__link">
     <span class="md-ellipsis">
       get
@@ -1108,6 +1117,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#conditions.value.ValuePath.get_from" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_from
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#conditions.value.ValuePath.get" class="md-nav__link">
     <span class="md-ellipsis">
       get
@@ -1409,6 +1427,117 @@
 <div class="doc doc-object doc-function">
 
 
+<h3 id="conditions.value.ValuePath.get_from" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">get_from</span>
+
+
+<a href="#conditions.value.ValuePath.get_from" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">get_from</span><span class="p">(</span><span class="n">mapping</span><span class="p">:</span> <span class="n"><span title="typing.Mapping">Mapping</span></span><span class="p">[</span><span class="n"><span title="typing.Any">Any</span></span><span class="p">,</span> <span class="n"><span title="power_events.conditions.condition.V">V</span></span><span class="p">],</span> <span class="n">default</span><span class="p">:</span> <span class="n"><span title="typing.Union">Union</span></span><span class="p">[</span><span class="n"><span title="power_events.conditions.condition.V">V</span></span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="conditions.value.Absent" href="#conditions.value.Absent">Absent</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><span title="conditions.value.ABSENT">ABSENT</span></span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">raise_if_absent</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="typing.Union">Union</span></span><span class="p">[</span><span class="n"><span title="typing.Any">Any</span></span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="conditions.value.Absent" href="#conditions.value.Absent">Absent</a></span><span class="p">]</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Get the value describe by the path inside mapping object.</p>
+<p>The value returns can be the sentinel <code>ABSENT</code> to differentiate real <code>None</code> value of default.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>mapping</code>
+            </td>
+            <td>
+                  <code><span title="typing.Mapping">Mapping</span>[<span title="typing.Any">Any</span>, <span title="power_events.conditions.condition.V">V</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Dictionary or mapping object to lookup.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>default</code>
+            </td>
+            <td>
+                  <code><span title="typing.Union">Union</span>[<span title="power_events.conditions.condition.V">V</span>, None, <a class="autorefs autorefs-internal" title="conditions.value.Absent" href="#conditions.value.Absent">Absent</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Default value if key not found. By default return the sentinel value <code>ABSENT</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code><span title="conditions.value.ABSENT">ABSENT</span></code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>raise_if_absent</code>
+            </td>
+            <td>
+                  <code>bool</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Flag to raise <code>ValueAbsentError</code> if missing key. Default <code>False</code></p>
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="note" open>
+  <summary>Note</summary>
+  <p>Support both string and integer keys.</p>
+</details>
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="power_events.exceptions.ValueAbsentError">ValueAbsentError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>if parameter <code>raise_if_absent</code> set, and key is missing.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h3 id="conditions.value.ValuePath.get" class="doc doc-heading">
             <span class="doc doc-object-name doc-function-name">get</span>
 
@@ -1420,6 +1549,7 @@
     <div class="doc doc-contents ">
 
         <p>Get the value describe by the path inside mapping object.</p>
+<p><code>get</code> is deprecated, use <code>get_from</code> instead.</p>
 <p>The value returns can be the sentinel <code>ABSENT</code> to differentiate real <code>None</code> value of default.</p>
 
 
