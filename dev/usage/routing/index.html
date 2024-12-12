@@ -671,8 +671,26 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#fallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fallback
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exception-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exception handling
+    </span>
+  </a>
   
 </li>
       
@@ -1036,8 +1054,26 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#fallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fallback
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exception-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exception handling
+    </span>
+  </a>
   
 </li>
       
@@ -1238,6 +1274,68 @@ As another possibility, you can also perform a condition over the whole event it
 <span class="k">def</span> <span class="nf">handle_today_creation</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Route if event body date is today and it&#39;s a creation&quot;&quot;&quot;</span>
 </code></pre></div>
+<h3 id="fallback">Fallback<a class="headerlink" href="#fallback" title="Permanent link">&para;</a></h3>
+<p>As mentioned above, we can have no routes that match our event, and choose whether to raise an error or not.
+Another way is to use the <code>fallback</code> decorator to override the other behaviours.</p>
+<p>The function will only be called when <strong>no route has been found</strong> to handle the current event.</p>
+<div class="language-python highlight"><span class="filename">Define fallback route</span><pre><span></span><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">from</span> <span class="nn">power_events</span> <span class="kn">import</span> <span class="n">EventResolver</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">EventResolver</span><span class="p">()</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="s2">&quot;body.name&quot;</span><span class="p">,</span> <span class="s2">&quot;creation&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">handle_creation</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="s2">&quot;creation&quot;</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">fallback</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">fallback</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="s2">&quot;fallback&quot;</span>
+</code></pre></div>
+<h2 id="exception-handling">Exception handling<a class="headerlink" href="#exception-handling" title="Permanent link">&para;</a></h2>
+<p>You can add a custom exception handler with any Python exception.
+This allows handling this kind of exception globally and not inside each of your routes.</p>
+<p>Let's say you have to deal with <code>ValidationError</code> that your code (or used library) might raise.
+You want to add a specific behaviour when this occurs (default value, log, REST API call, metrics, send message, etc.).</p>
+<div class="language-python highlight"><span class="filename">Exception handling</span><pre><span></span><code><span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">Logger</span>
+
+<span class="kn">from</span> <span class="nn">power_events</span> <span class="kn">import</span> <span class="n">EventResolver</span>
+<span class="kn">from</span> <span class="nn">power_events.conditions</span> <span class="kn">import</span> <span class="n">ValuePath</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">Logger</span><span class="p">(</span><span class="s2">&quot;power-events&quot;</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">ValidationError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">EventResolver</span><span class="p">()</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">exception_handler</span><span class="p">(</span><span class="n">ValidationError</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">validation_exception_handler</span><span class="p">(</span><span class="n">exc</span><span class="p">:</span> <span class="n">ValidationError</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Your handling logic&quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Malformed event: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="s2">&quot;body.name&quot;</span><span class="p">,</span> <span class="s2">&quot;creation&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">handle_creation</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="n">sender</span> <span class="o">=</span> <span class="n">ValuePath</span><span class="p">(</span><span class="s2">&quot;body.sender&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_from</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sender</span> <span class="o">==</span> <span class="s2">&quot;unknown&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;unknown sender&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;sender&quot;</span><span class="p">:</span> <span class="n">sender</span><span class="p">,</span> <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;created&quot;</span><span class="p">}</span>
+</code></pre></div>
+<p>Here, if we get an event where the sender is <code>"unknown"</code>, the route will raise a <code>ValidationError</code>.
+But <code>validation_exception_handler</code> will handle it.</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>The <code>exception_handler</code> can also:</p>
+<ul>
+<li>support passing a list of exception types to be handled with one handler.</li>
+<li>handle exception like <code>except</code> (resolve inheritance).</li>
+</ul>
+</div>
 
 
 

@@ -837,6 +837,24 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#resolver.EventResolver.exception_handler" class="md-nav__link">
+    <span class="md-ellipsis">
+      exception_handler
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resolver.EventResolver.fallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      fallback
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#resolver.EventResolver.resolve" class="md-nav__link">
     <span class="md-ellipsis">
       resolve
@@ -1040,6 +1058,24 @@
   <a href="#resolver.EventResolver.when" class="md-nav__link">
     <span class="md-ellipsis">
       when
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resolver.EventResolver.exception_handler" class="md-nav__link">
+    <span class="md-ellipsis">
+      exception_handler
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resolver.EventResolver.fallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      fallback
     </span>
   </a>
   
@@ -1449,6 +1485,84 @@
           </tr>
       </tbody>
     </table>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="resolver.EventResolver.exception_handler" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">exception_handler</span>
+
+
+<a href="#resolver.EventResolver.exception_handler" class="headerlink" title="Permanent link">&para;</a></h3>
+          <div class="doc-overloads">
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">exception_handler</span><span class="p">(</span><span class="n">exc_type</span><span class="p">:</span> <span class="n"><span title="typing.Type">Type</span></span><span class="p">[</span><span class="n"><span title="resolver.Error">Error</span></span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n"><span title="typing.Callable">Callable</span></span><span class="p">[[</span><span class="n"><span title="typing.Callable">Callable</span></span><span class="p">[[</span><span class="n"><span title="resolver.Error">Error</span></span><span class="p">],</span> <span class="n"><span title="typing.Any">Any</span></span><span class="p">]],</span> <span class="n"><span title="typing.Callable">Callable</span></span><span class="p">[[</span><span class="n"><span title="resolver.Error">Error</span></span><span class="p">],</span> <span class="n"><span title="typing.Any">Any</span></span><span class="p">]]</span>
+</code></pre></div><div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">exception_handler</span><span class="p">(</span><span class="n">exc_type</span><span class="p">:</span> <span class="n"><span title="collections.abc.Sequence">Sequence</span></span><span class="p">[</span><span class="n"><span title="typing.Type">Type</span></span><span class="p">[</span><span class="n">Exception</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n"><span title="typing.Callable">Callable</span></span><span class="p">[[</span><span class="n"><span title="typing.Callable">Callable</span></span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n"><span title="typing.Any">Any</span></span><span class="p">]],</span> <span class="n"><span title="typing.Callable">Callable</span></span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n"><span title="typing.Any">Any</span></span><span class="p">]]</span>
+</code></pre></div>          </div>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">exception_handler</span><span class="p">(</span><span class="n">exc_type</span><span class="p">:</span> <span class="n"><span title="typing.Union">Union</span></span><span class="p">[</span><span class="n"><span title="typing.Type">Type</span></span><span class="p">[</span><span class="n"><span title="resolver.Error">Error</span></span><span class="p">],</span> <span class="n"><span title="collections.abc.Sequence">Sequence</span></span><span class="p">[</span><span class="n"><span title="typing.Type">Type</span></span><span class="p">[</span><span class="n"><span title="resolver.Error">Error</span></span><span class="p">]]])</span> <span class="o">-&gt;</span> <span class="n"><span title="typing.Callable">Callable</span></span><span class="p">[[</span><span class="n"><span title="typing.Callable">Callable</span></span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n"><span title="typing.Any">Any</span></span><span class="p">]],</span> <span class="n"><span title="typing.Callable">Callable</span></span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n"><span title="typing.Any">Any</span></span><span class="p">]]</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Register a function to handle certain exception type.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>exc_type</code>
+            </td>
+            <td>
+                  <code><span title="typing.Union">Union</span>[<span title="typing.Type">Type</span>[<span title="resolver.Error">Error</span>], <span title="collections.abc.Sequence">Sequence</span>[<span title="typing.Type">Type</span>[<span title="resolver.Error">Error</span>]]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>exception type to handle.
+Could be either a unique exception type or a list of types.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="resolver.EventResolver.fallback" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">fallback</span>
+
+
+<a href="#resolver.EventResolver.fallback" class="headerlink" title="Permanent link">&para;</a></h3>
+          <div class="doc-overloads">
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">fallback</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n"><span title="typing.Callable">Callable</span></span><span class="p">[[</span><span class="n"><a class="autorefs autorefs-internal" title="resolver.Func" href="#resolver.Func">Func</a></span><span class="p">[</span><span class="n"><span title="resolver.P">P</span></span><span class="p">]],</span> <span class="n"><a class="autorefs autorefs-internal" title="resolver.Func" href="#resolver.Func">Func</a></span><span class="p">[</span><span class="n"><span title="resolver.P">P</span></span><span class="p">]]</span>
+</code></pre></div><div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">fallback</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="resolver.Func" href="#resolver.Func">Func</a></span><span class="p">[</span><span class="n"><span title="resolver.P">P</span></span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="resolver.Func" href="#resolver.Func">Func</a></span><span class="p">[</span><span class="n"><span title="resolver.P">P</span></span><span class="p">]</span>
+</code></pre></div>          </div>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">fallback</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n"><span title="typing.Optional">Optional</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="resolver.Func" href="#resolver.Func">Func</a></span><span class="p">[</span><span class="n"><span title="resolver.P">P</span></span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="typing.Union">Union</span></span><span class="p">[</span><span class="n"><span title="typing.Callable">Callable</span></span><span class="p">[[</span><span class="n"><a class="autorefs autorefs-internal" title="resolver.Func" href="#resolver.Func">Func</a></span><span class="p">[</span><span class="n"><span title="resolver.P">P</span></span><span class="p">]],</span> <span class="n"><a class="autorefs autorefs-internal" title="resolver.Func" href="#resolver.Func">Func</a></span><span class="p">[</span><span class="n"><span title="resolver.P">P</span></span><span class="p">]],</span> <span class="n"><a class="autorefs autorefs-internal" title="resolver.Func" href="#resolver.Func">Func</a></span><span class="p">[</span><span class="n"><span title="resolver.P">P</span></span><span class="p">]]</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Register a fallback route if no registered routes match the event.</p>
 
     </div>
 
