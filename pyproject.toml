@@ -184,6 +184,7 @@ version_provider = "scm"
 annotated_tag = true
 changelog_incremental = true
 name = "cz_customize" # use custom config
+bump_message = ":rocket: bump: version $current_version → $new_version"
 
 [tool.commitizen.customize]
 schema = "<emoji> <type>: <body>"
