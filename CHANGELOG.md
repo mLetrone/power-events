@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 ## Power-events
 
+## 1.2.0 (2025-11-10)
+
+### :wrench: configuration
+
+- support python 3.14
+
 ## 1.1.0 (2024-12-12)
 
 ### :recycle: Refactoring
