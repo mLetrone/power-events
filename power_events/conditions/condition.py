@@ -1,10 +1,9 @@
 from abc import ABC, abstractmethod
+from collections.abc import Iterable, Mapping
 from enum import Enum
 from typing import (
     Any,
     Callable,
-    Iterable,
-    Mapping,
     TypeVar,
 )
 
@@ -113,7 +112,7 @@ class And(ConditionExpression):
         return Or(*(~condition for condition in self._conditions))
 
 
-def Neg(condition: Condition) -> Condition:
+def Neg(condition: Condition) -> Condition:  # noqa: N802
     """Create a new condition representing the logical NOT of the given condition.
 
     Args:

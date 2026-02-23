@@ -1,4 +1,5 @@
-from typing import Any, List, Mapping
+from collections.abc import Mapping
+from typing import Any
 
 
 class PowerEventsError(Exception):
@@ -35,7 +36,7 @@ class RouteError(PowerEventsError):
 class NoRouteFoundError(RouteError):
     """Exception raised when no route is found for an event."""
 
-    def __init__(self, event: Mapping[Any, Any], routes: List[str]) -> None:
+    def __init__(self, event: Mapping[Any, Any], routes: list[str]) -> None:
         """Initialize the exception with the event and the registered routes.
 
         Args:
@@ -53,7 +54,7 @@ class NoRouteFoundError(RouteError):
 class MultipleRoutesError(RouteError):
     """Exception raised when multiple routes are found for an event."""
 
-    def __init__(self, event: Mapping[Any, Any], routes: List[str]) -> None:
+    def __init__(self, event: Mapping[Any, Any], routes: list[str]) -> None:
         """Initialize the exception with the event and the available routes.
 
         Args:

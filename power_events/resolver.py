@@ -1,15 +1,10 @@
-from collections.abc import Sequence
+from collections.abc import Container, Mapping, Sequence
 from dataclasses import dataclass
 from logging import Logger
 from typing import (
     Any,
     Callable,
-    Container,
-    Dict,
-    List,
-    Mapping,
     Optional,
-    Type,
     TypeVar,
     Union,
     overload,
@@ -27,7 +22,7 @@ V = TypeVar("V")
 Error = TypeVar("Error", bound=Exception)
 P = ParamSpec("P")
 
-Func = Callable[Concatenate[Dict[Any, Any], P], Any]
+Func = Callable[Concatenate[dict[Any, Any], P], Any]
 
 logger = Logger("power_events")
 
@@ -63,9 +58,9 @@ class EventResolver:
             allow_multiple_routes: option to allow multiples routes on same event, otherwise raise `MultipleRoutesError`.
             allow_no_route: option to allow no routes on event, otherwise raise `NoRouteFoundError`.
         """
-        self._routes: List[EventRoute] = []
-        self._fallback_route: Optional[EventRoute] = None
-        self._exception_handlers: Dict[Type[Exception], Callable[..., Any]] = {}
+        self._routes: list[EventRoute] = []
+        self._fallback_route: EventRoute | None = None
+        self._exception_handlers: dict[type[Exception], Callable[..., Any]] = {}
         self._allow_multiple_routes = allow_multiple_routes
         self._allow_no_route = allow_no_route
 
@@ -112,16 +107,16 @@ class EventResolver:
 
     @overload
     def exception_handler(
-        self, exc_type: Type[Error]
+        self, exc_type: type[Error]
     ) -> Callable[[Callable[[Error], Any]], Callable[[Error], Any]]: ...
 
     @overload
     def exception_handler(
-        self, exc_type: Sequence[Type[Exception]]
+        self, exc_type: Sequence[type[Exception]]
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]: ...
 
     def exception_handler(
-        self, exc_type: Union[Type[Error], Sequence[Type[Error]]]
+        self, exc_type: Union[type[Error], Sequence[type[Error]]]
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
         """Register a function to handle certain exception type.
 
@@ -146,13 +141,11 @@ class EventResolver:
     @overload
     def fallback(self, func: Func[P]) -> Func[P]: ...
 
-    def fallback(
-        self, func: Optional[Func[P]] = None
-    ) -> Union[Callable[[Func[P]], Func[P]], Func[P]]:
+    def fallback(self, func: Func[P] | None = None) -> Callable[[Func[P]], Func[P]] | Func[P]:
         """Register a fallback route if no registered routes match the event."""
 
         def register_fallback(fn: Func[P]) -> Func[P]:
-            self._fallback_route = EventRoute(fn, Value.root().match(lambda x: True))
+            self._fallback_route = EventRoute(fn, Value.root().match(lambda x: True))  # noqa: ARG005
             return fn
 
         if func is None:
@@ -180,7 +173,7 @@ class EventResolver:
 
             raise
 
-    def _find_matching_routes(self, event: Mapping[Any, V]) -> List[EventRoute]:
+    def _find_matching_routes(self, event: Mapping[Any, V]) -> list[EventRoute]:
         """Find the routes matching the event."""
         matching_routes = [route for route in self._routes if route.match(event)]
 
@@ -190,7 +183,7 @@ class EventResolver:
 
         return matching_routes
 
-    def _handle_not_found(self, event: Mapping[Any, V], available_routes: List[EventRoute]) -> None:
+    def _handle_not_found(self, event: Mapping[Any, V], available_routes: list[EventRoute]) -> None:
         """Handle cases where no routes match the event.
 
         Args:
@@ -207,7 +200,7 @@ class EventResolver:
             logger.warning("No routes for this event")  # pragma: no cover
 
     def _handle_multiple_routes(
-        self, event: Mapping[Any, V], available_routes: List[EventRoute]
+        self, event: Mapping[Any, V], available_routes: list[EventRoute]
     ) -> None:
         """Handle cases where multiple routes match the event.
 

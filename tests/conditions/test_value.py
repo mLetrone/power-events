@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import List, Optional
 
 import pytest
 from maypy.predicates import contains, is_length
@@ -39,7 +38,7 @@ class TestValuePath:
         ],
     )
     def test_should_create_when_valid_path(
-        self, path: str, sep: Optional[str], keys: List[str]
+        self, path: str, sep: str | None, keys: list[str]
     ) -> None:
         assert ValuePath(path, separator=sep).keys == keys
 
@@ -64,8 +63,8 @@ class TestValuePath:
     def test_get_should_raise_error_when_no_value_and_flag_set(self) -> None:
         with pytest.raises(ValueAbsentError) as excinfo:
             ValuePath("foo.bar").get_from({"foo": {}}, raise_if_absent=True)
-            assert excinfo.value.missing_key == "bar"
-            assert excinfo.value.path == "foo.bar"
+        assert excinfo.value.missing_key == "bar"
+        assert excinfo.value.path == "foo.bar"
 
 
 class TestValue:
