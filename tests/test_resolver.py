@@ -1,5 +1,5 @@
 from collections.abc import Mapping
-from typing import Any, Dict, Union
+from typing import Any, Union
 
 import pytest
 
@@ -60,7 +60,7 @@ class TestResolver:
             return "lol"
 
         @app.equal("a.b", "TEST")
-        def handle_test2(_event: Dict[str, Any]) -> str:
+        def handle_test2(_event: dict[str, Any]) -> str:
             return "lol-2"
 
         with pytest.raises(MultipleRoutesError):
@@ -70,7 +70,7 @@ class TestResolver:
         app = EventResolver(allow_no_route=False)
 
         @app.equal("a.b", "TEST")
-        def handle_test(_event: Dict[str, Any]) -> str:
+        def handle_test(_event: dict[str, Any]) -> str:
             return "lol"
 
         res = app.resolve({"a": {"b": "TEST"}})
@@ -81,7 +81,7 @@ class TestResolver:
         app = EventResolver()
 
         @app.one_of("a", ["BAR", "FOO"])
-        def handle_foo(_event: Dict[str, Any]) -> str:
+        def handle_foo(_event: dict[str, Any]) -> str:
             return "BAR"
 
         res = app.resolve({"a": "FOO"})
@@ -92,11 +92,11 @@ class TestResolver:
         app = EventResolver()
 
         @app.one_of("a", ["BAR", "FOO"])
-        def handle_contain(_event: Dict[str, Any]) -> str:
+        def handle_contain(_event: dict[str, Any]) -> str:
             return "BAR"
 
         @app.contain("a", "b", "c")
-        def handle_foo(_event: Dict[str, Any]) -> str:
+        def handle_foo(_event: dict[str, Any]) -> str:
             return "contain"
 
         res = app.resolve({"a": ["b", "c"]})
@@ -108,11 +108,11 @@ class TestResolver:
         app = EventResolver(allow_multiple_routes=True)
 
         @app.when(Value("a.b.c").one_of(["TEST"]))
-        def handle_test(_event: Dict[str, Any]) -> str:
+        def handle_test(_event: dict[str, Any]) -> str:
             return "test"
 
         @app.equal("a.d", 1)
-        def handle_d(_event: Dict[str, Any]) -> str:
+        def handle_d(_event: dict[str, Any]) -> str:
             return "d"
 
         res = app.resolve(event)
@@ -123,11 +123,11 @@ class TestResolver:
         app = EventResolver()
 
         @app.one_of("a", ["BAR", "FOO"])
-        def handle_contain(_event: Dict[str, Any]) -> str:
+        def handle_contain(_event: dict[str, Any]) -> str:
             return "BAR"
 
         @app.contain("a", "b", "c")
-        def handle_foo(_event: Dict[str, Any]) -> str:
+        def handle_foo(_event: dict[str, Any]) -> str:
             raise ValueError("test")
 
         with pytest.raises(ValueError, match="test"):
@@ -141,7 +141,7 @@ class TestResolver:
             return f"Something went wrong with value... {exception}"
 
         @app.contain("a", "b", "c")
-        def handle_foo(_event: Dict[str, Any]) -> str:
+        def handle_foo(_event: dict[str, Any]) -> str:
             raise ValueError("test")
 
         with pytest.raises(ValueError, match="test"):
@@ -155,11 +155,11 @@ class TestResolver:
             return f"Something went wrong with value... {exception}"
 
         @app.one_of("a", ["BAR", "FOO"])
-        def handle_contain(_event: Dict[str, Any]) -> str:
+        def handle_contain(_event: dict[str, Any]) -> str:
             return "BAR"
 
         @app.contain("a", "b", "c")
-        def handle_foo(_event: Dict[str, Any]) -> str:
+        def handle_foo(_event: dict[str, Any]) -> str:
             raise ValueError("test")
 
         assert app.resolve({"a": ["b", "c"]}) == ["Something went wrong with value... test"]
@@ -174,12 +174,12 @@ class TestResolver:
             return f"Something went wrong with error of {type(exception).__name__}..."
 
         @app.one_of("a", ["BAR", "FOO"])
-        def handle_contain(_event: Dict[str, Any]) -> str:
-            raise TypeError()
+        def handle_contain(_event: dict[str, Any]) -> str:
+            raise TypeError
 
         @app.contain("a", "b", "c")
-        def handle_foo(_event: Dict[str, Any]) -> str:
-            raise ValueError()
+        def handle_foo(_event: dict[str, Any]) -> str:
+            raise ValueError
 
         assert app.resolve({"a": ["b", "c"]}) == [
             "Something went wrong with error of ValueError..."
@@ -196,8 +196,8 @@ class TestResolver:
             return f"Something went wrong with error of {type(exception).__name__}..."
 
         @app.contain("a", "b", "c")
-        def handle_foo(_event: Dict[str, Any]) -> str:
-            raise CustomValueError()
+        def handle_foo(_event: dict[str, Any]) -> str:
+            raise CustomValueError
 
         assert app.resolve({"a": ["b", "c"]}) == [
             "Something went wrong with error of CustomValueError..."

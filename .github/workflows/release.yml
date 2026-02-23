@@ -10,11 +10,11 @@ jobs:
     name: "Build distribution package"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
-          python-version: '3.9'
+          python-version: ${{ vars.PYTHON_VERS }}
 
       - name: "Install 'build' library"
         run: pip install -U build
@@ -55,11 +55,11 @@ jobs:
       id-token: write # IMPORTANT: mandatory for sigstore
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
-          python-version: "3.9"
+          python-version: ${{ vars.PYTHON_VERS }}
 
       - name: "Download distribution artifacts"
         uses: actions/download-artifact@v4

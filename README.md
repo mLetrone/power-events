@@ -4,7 +4,7 @@
 
   [![Test](https://github.com/MLetrone/power-events/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/MLetrone/power-events/actions/workflows/ci.yml)
   [![Coverage](https://coverage-badge.samuelcolvin.workers.dev/MLetrone/power-events.svg)](https://coverage-badge.samuelcolvin.workers.dev/redirect/MLetrone/power-events)
-  [![Language](https://img.shields.io/badge/Language-python≥3.9-3776ab?style=flat-square&logo=Python)](https://www.python.org/)
+  [![Language](https://img.shields.io/badge/Language-python≥3.11-3776ab?style=flat-square&logo=Python)](https://www.python.org/)
   ![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)
   ![Style](https://img.shields.io/badge/Style-ruff-9a9a9a?style=flat-square)
   ![Lint](https://img.shields.io/badge/Lint-ruff,%20mypy-brightgreen?style=flat-square)

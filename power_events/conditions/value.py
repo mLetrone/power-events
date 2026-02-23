@@ -1,12 +1,14 @@
 import re
-from typing import Any, Container, List, Mapping, Optional, Union, overload
+from collections.abc import Container, Mapping
+from typing import Any, overload
 
-from maypy import Mapper, Maybe, Predicate
+from maypy import Mapper, Predicate, maybe
 from maypy.predicates import (
     contains,
     equals,
     is_blank_str,
     is_empty,
+    is_falsy,
     is_length,
     is_truthy,
     match_regex,
@@ -31,9 +33,9 @@ class ValuePath(str):
 
     SEPARATOR = "."
     separator: str
-    keys: List[str]
+    keys: list[str]
 
-    def __new__(cls, path: str, *, separator: Optional[str] = None) -> Self:
+    def __new__(cls, path: str, *, separator: str | None = None) -> Self:
         """Create a new ValuePath object from a path string.
 
         Args:
@@ -55,10 +57,10 @@ class ValuePath(str):
     def get_from(
         self,
         mapping: Mapping[Any, V],
-        default: Union[V, None, Absent] = ABSENT,
+        default: V | None | Absent = ABSENT,
         *,
         raise_if_absent: bool = False,
-    ) -> Union[Any, None, Absent]:
+    ) -> Any | None | Absent:
         """Get the value describe by the path inside mapping object.
 
         The value returns can be the sentinel `ABSENT` to differentiate real `None` value of default.
@@ -74,7 +76,7 @@ class ValuePath(str):
         Raises:
             ValueAbsentError: if parameter `raise_if_absent` set, and key is missing.
         """
-        value: Union[Mapping[Any, V], V, None, Absent] = dict(mapping)
+        value: Mapping[Any, V] | V | None | Absent = dict(mapping)
         for key in self.keys:
             key_present = False
 
@@ -99,10 +101,10 @@ class ValuePath(str):
     def get(
         self,
         mapping: Mapping[Any, V],
-        default: Union[V, None, Absent] = ABSENT,
+        default: V | None | Absent = ABSENT,
         *,
         raise_if_absent: bool = False,
-    ) -> Union[Any, None, Absent]:
+    ) -> Any | None | Absent:
         """Get the value describe by the path inside mapping object.
 
         `get` is deprecated, use `get_from` instead.
@@ -137,7 +139,7 @@ class ValuePath(str):
             )
 
 
-class _MissingPredicate(Predicate[Any]):
+class _MissingPredicate:
     """A predicate that always returns False, representing a missing condition."""
 
     def __call__(self, val: Any) -> bool:
@@ -153,7 +155,7 @@ MISSING = _MissingPredicate()
 class Value(Condition):
     """Condition based on a value at a certain path in an event."""
 
-    def __init__(self, value_path: str, mapper: Optional[Mapper[Any, Any]] = None) -> None:
+    def __init__(self, value_path: str, mapper: Mapper[Any, Any] | None = None) -> None:
         """Initialize the condition with the specified value path.
 
         Args:
@@ -194,11 +196,15 @@ class Value(Condition):
         if (val := self.path.get_from(event, raise_if_absent=raise_if_absent)) is ABSENT:
             return False
 
-        return self._predicate(Maybe.of(val).map(self.mapper).or_else(val))
+        return self._predicate(maybe(val).map(self.mapper).or_else(val))
 
     def is_truthy(self) -> Self:
         """Add value is truthy check to the condition."""
         return self.__add(is_truthy)
+
+    def is_falsy(self) -> Self:
+        """Add value is truthy check to the condition."""
+        return self.__add(is_falsy)
 
     def equals(self, expected: Any) -> Self:
         """Add value equals the expected value check to the condition.
@@ -212,11 +218,9 @@ class Value(Condition):
     def match_regex(self, regex: re.Pattern[str]) -> Self: ...
 
     @overload
-    def match_regex(self, regex: str, flags: Union[re.RegexFlag, int] = 0) -> Self: ...
+    def match_regex(self, regex: str, flags: re.RegexFlag | int = 0) -> Self: ...
 
-    def match_regex(
-        self, regex: Union[re.Pattern[str], str], flags: Union[re.RegexFlag, int] = 0
-    ) -> Self:
+    def match_regex(self, regex: re.Pattern[str] | str, flags: re.RegexFlag | int = 0) -> Self:
         """Add value matches the given regex pattern check to the condition.
 
         Args:
