@@ -7,7 +7,7 @@ import pytest
 from power_events.conditions import Neg, Value
 from power_events.event import event_converter
 from power_events.exceptions import MultipleRoutesError, NoRouteFoundError
-from power_events.resolver import EventResolver, EventRoute
+from power_events.resolver import EventResolver, EventRoute, EventRouter
 
 
 class TestEventRoute:
@@ -204,6 +204,33 @@ class TestResolver:
         assert app.resolve({"a": ["b", "c"]}) == [
             "Something went wrong with error of CustomValueError..."
         ]
+
+    def test_include_routers(self) -> None:
+        router_a = EventRouter()
+        router_b = EventRouter()
+
+        @router_a.equal("a", 1)
+        def handle_a_1(event: dict[str, Any]) -> str:
+            return "a-1"
+
+        @router_a.equal("a", 2)
+        def handle_a_2(event: dict[str, Any]) -> str:
+            return "a-2"
+
+        @router_b.equal("b", 1)
+        def handle_b_1(event: dict[str, Any]) -> str:
+            return "b-1"
+
+        @router_b.equal("b", 2)
+        def handle_b_2(event: dict[str, Any]) -> str:
+            return "b-2"
+
+        app = EventResolver()
+        app.include_router(router_a, Value("name").equals("a"))
+        app.include_router(router_b, Value("name").equals("b"))
+
+        assert app.resolve({"name": "a", "a": 2}) == ["a-2"]
+        assert app.resolve({"name": "b", "b": 1}) == ["b-1"]
 
     def test_with_event_mapper(self) -> None:
         @dataclass

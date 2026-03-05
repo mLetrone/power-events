@@ -4,9 +4,7 @@ from logging import Logger
 from typing import (
     Any,
     Callable,
-    Optional,
     TypeVar,
-    Union,
     overload,
 )
 
@@ -22,12 +20,12 @@ V = TypeVar("V")
 Error = TypeVar("Error", bound=Exception)
 P = ParamSpec("P")
 
-Func = Callable[Concatenate[dict[Any, Any], P], Any]
+Func = Callable[Concatenate[Any, P], Any]
 
 logger = Logger("power_events")
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class EventRoute:
     """Class representing an event route with a condition and a function."""
 
@@ -48,11 +46,11 @@ class EventRoute:
         return self.func.__name__
 
 
-class EventResolver:
-    """Class responsible for resolving events against registered routes."""
+class EventRouter:
+    """Router for events, allowing registration of conditions and handlers."""
 
-    def __init__(self, allow_multiple_routes: bool = False, allow_no_route: bool = True) -> None:
-        """Initialize the event resolver with optional configuration.
+    def __init__(self, *, allow_multiple_routes: bool = False, allow_no_route: bool = True) -> None:
+        """Initialize the event router with optional configuration.
 
         Args:
             allow_multiple_routes: option to allow multiples routes on same event, otherwise raise `MultipleRoutesError`.
@@ -112,11 +110,11 @@ class EventResolver:
 
     @overload
     def exception_handler(
-        self, exc_type: Sequence[type[Exception]]
+        self, exc_type: Sequence[type[Error]]
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]: ...
 
     def exception_handler(
-        self, exc_type: Union[type[Error], Sequence[type[Error]]]
+        self, exc_type: type[Error] | Sequence[type[Error]]
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
         """Register a function to handle certain exception type.
 
@@ -153,6 +151,34 @@ class EventResolver:
 
         return register_fallback(func)
 
+
+class EventResolver(EventRouter):
+    """Resolves events by finding and executing matching routes from registered routers.
+
+    This class extends `EventRouter` to provide a mechanism for resolving events
+    against a collection of routes. It can include routes from other `EventRouter`
+    instances and provides a central `resolve` method to process an event.
+    """
+
+    def include_router(self, router: EventRouter, base_condition: Condition | None = None) -> None:
+        """Include router routes and exception handlers into this resolver.
+
+        Args:
+            router: The EventRouter instance to include.
+            base_condition: An optional condition to apply to all routes from the included router.
+                            If provided, it will be combined with each route's existing condition.
+        """
+        self._exception_handlers.update(router._exception_handlers)
+
+        for route in router._routes:
+            new_route = route
+
+            if base_condition:
+                new_condition = base_condition & route.condition
+                new_route = EventRoute(route.func, new_condition)
+
+            self._routes.append(new_route)
+
     def resolve(self, event: Mapping[Any, V]) -> Sequence[Any]:
         """Resolve the event to the matching routes and execute their functions.
 
@@ -167,7 +193,7 @@ class EventResolver:
             return [route.func(event) for route in available_routes]
 
         except Exception as exc:
-            handler = self._lookup_exception_handler(exc)
+            handler = self._lookup_exception_handler(type(exc))
             if handler:
                 return [handler(exc)]
 
@@ -216,9 +242,11 @@ class EventResolver:
                 raise MultipleRoutesError(event, [route.name for route in available_routes])
             logger.warning("Multiple routes for this event")  # pragma: no cover
 
-    def _lookup_exception_handler(self, exc: Exception) -> Optional[Callable[[Exception], Any]]:
+    def _lookup_exception_handler(
+        self, exc_type: type[Exception]
+    ) -> Callable[[Exception], Any] | None:
         """Lookup the handler for the exception using Method Resolution Order, for matching against base exception."""
-        for cls in type(exc).__mro__:
+        for cls in exc_type.__mro__:
             if cls in self._exception_handlers:
                 return self._exception_handlers[cls]
 
