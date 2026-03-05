@@ -1,9 +1,11 @@
 from collections.abc import Mapping
-from typing import Any, Union
+from dataclasses import dataclass
+from typing import Any, Literal
 
 import pytest
 
 from power_events.conditions import Neg, Value
+from power_events.event import event_converter
 from power_events.exceptions import MultipleRoutesError, NoRouteFoundError
 from power_events.resolver import EventResolver, EventRoute
 
@@ -170,7 +172,7 @@ class TestResolver:
         app = EventResolver()
 
         @app.exception_handler([ValueError, TypeError])
-        def handle_value_error(exception: Union[ValueError, TypeError]) -> str:
+        def handle_value_error(exception: ValueError | TypeError) -> str:
             return f"Something went wrong with error of {type(exception).__name__}..."
 
         @app.one_of("a", ["BAR", "FOO"])
@@ -202,6 +204,43 @@ class TestResolver:
         assert app.resolve({"a": ["b", "c"]}) == [
             "Something went wrong with error of CustomValueError..."
         ]
+
+    def test_with_event_mapper(self) -> None:
+        @dataclass
+        class CartOperation:
+            type: Literal["order_created", "order_update", "order_delete"]
+            order_id: str
+            user_id: float
+            nb_items: int
+
+        def to_cart_op(dto: dict[str, Any]) -> CartOperation:
+            return CartOperation(
+                order_id=dto["order_id"],
+                type=dto["type"],
+                user_id=dto["user_id"],
+                nb_items=len(dto.get("cart", {}).get("items", [])),
+            )
+
+        app = EventResolver()
+
+        # Order created and digital purchase.
+        @app.when(Value("type").equals("order_created") & Value("cart.is_digital").is_truthy())
+        @event_converter(to_cart_op)
+        def handle_digital_purchase(event: CartOperation) -> str:
+            return f"{event.order_id} has {event.nb_items} digital purchases"
+
+        @app.one_of("type", ["order_update", "order_delete"])
+        def handle_order_modification(event: dict[str, Any]) -> str:
+            return f"Order modification <{event['type']}> : {event['order_id']}"
+
+        assert app.resolve(
+            {
+                "type": "order_created",
+                "order_id": "12345",
+                "user_id": "67890",
+                "cart": {"is_digital": True, "items": ["$10 voucher"]},
+            }
+        ) == ["12345 has 1 digital purchases"]
 
     def test_readme_simple(self) -> None:
         app = EventResolver()

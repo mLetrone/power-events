@@ -8,6 +8,6 @@ except PackageNotFoundError:  # pragma: no cover
     # package is not installed
     __version__ = "undefined"
 
-from .resolver import EventResolver
 
-__all__ = ["EventResolver"]
+from .event import event_converter as event_converter
+from .resolver import EventResolver as EventResolver
