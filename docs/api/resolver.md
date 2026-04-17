@@ -2,4 +2,5 @@
     options:
       members:
         - Func
+        - EventRouter
         - EventResolver

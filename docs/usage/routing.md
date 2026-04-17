@@ -216,6 +216,54 @@ def fallback(event: dict[str, Any]) -> str:
     return "fallback"
 ```
 
+## Routers
+
+To better organize your project, you can split your routes into multiple `EventRouter` instances and then include them in your main `EventResolver`.
+This is useful for grouping related routes together, for example, by domain.
+
+```python title="Using multiple EventRouters"
+from power_events import EventResolver, EventRouter
+from power_events.conditions import Value
+
+# Router for order-related events
+order_router = EventRouter()
+
+@order_router.equal("type", "order_created")
+def handle_order_created(event: dict) -> None:
+    print(f"Order created: {event['order_id']}")
+
+@order_router.equal("type", "order_deleted")
+def handle_order_deleted(event: dict) -> None:
+    print(f"Order deleted: {event['order_id']}")
+
+
+# Router for user-related events
+user_router = EventRouter()
+
+@user_router.equal("type", "user_created")
+def handle_user_created(event: dict) -> None:
+    print(f"User created: {event['user_id']}")
+
+@user_router.equal("type", "user_deleted")
+def handle_user_deleted(event: dict) -> None:
+    print(f"User deleted: {event['user_id']}")
+
+
+# Compose both routers into one resolver
+app = EventResolver()
+app.include_router(order_router, base_condition=Value("service").equals("order"))
+app.include_router(user_router, base_condition=Value("service").equals("user"))
+
+# Routed to order_router
+app.resolve({"service": "order", "type": "order_created", "order_id": "42"})
+
+# Routed to user_router
+app.resolve({"service": "user", "type": "user_deleted", "user_id": "99"})
+```
+
+The `base_condition` passed to `include_router` is combined with each route's own condition using `AND`.
+This lets you namespace entire routers by domain, source system, or any other event field — without duplicating that check on every individual route.
+
 ## Exception handling
 
 You can add a custom exception handler with any Python exception.
