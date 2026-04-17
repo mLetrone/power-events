@@ -1,9 +1,8 @@
 # Installation
 
-Power-events has few dependencies:
+Power-events has only one dependency:
 
 * [MayPy](https://mletrone.github.io/maypy/): Pythonic Java Optional
-* [typing-extensions](https://pypi.org/project/typing-extensions/): Backport of the standard library typing module.
 
 ## Install with pip
 
