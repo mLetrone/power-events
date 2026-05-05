@@ -1,3 +1,4 @@
+import asyncio
 from collections.abc import Container, Mapping, Sequence
 from dataclasses import dataclass
 from logging import Logger
@@ -13,6 +14,7 @@ from typing_extensions import Concatenate, ParamSpec
 
 from .conditions import Condition, Value
 from .exceptions import MultipleRoutesError, NoRouteFoundError
+from .utils.functions import run_async
 
 T = TypeVar("T")
 K = TypeVar("K")
@@ -190,7 +192,7 @@ class EventResolver(EventRouter):
             self._handle_not_found(event, available_routes)
             self._handle_multiple_routes(event, available_routes)
 
-            return [route.func(event) for route in available_routes]
+            return asyncio.run(self._run_all_routes(available_routes, event))
 
         except Exception as exc:
             handler = self._lookup_exception_handler(type(exc))
@@ -198,6 +200,16 @@ class EventResolver(EventRouter):
                 return [handler(exc)]
 
             raise
+
+    @staticmethod
+    async def _run_all_routes(routes: list[EventRoute], event: Any) -> Sequence[Any]:
+        """Execute all matching routes and execute their functions.
+
+        Args:
+            routes: The routes to execute.
+            event: The current event to execute.
+        """
+        return await asyncio.gather(*(run_async(route.func, event) for route in routes))
 
     def _find_matching_routes(self, event: Mapping[Any, V]) -> list[EventRoute]:
         """Find the routes matching the event."""
