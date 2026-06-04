@@ -110,7 +110,7 @@ class TestResolver:
         app = EventResolver(allow_multiple_routes=True)
 
         @app.when(Value("a.b.c").one_of(["TEST"]))
-        def handle_test(_event: dict[str, Any]) -> str:
+        async def handle_test(_event: dict[str, Any]) -> str:
             return "test"
 
         @app.equal("a.d", 1)
@@ -227,7 +227,7 @@ class TestResolver:
 
         app = EventResolver()
         app.include_router(router_a, Value("name").equals("a"))
-        app.include_router(router_b, Value("name").equals("b"))
+        app.include_router(router_b)
 
         assert app.resolve({"name": "a", "a": 2}) == ["a-2"]
         assert app.resolve({"name": "b", "b": 1}) == ["b-1"]

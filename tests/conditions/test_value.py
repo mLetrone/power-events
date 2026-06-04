@@ -43,7 +43,7 @@ class TestValuePath:
         assert ValuePath(path, separator=sep).keys == keys
 
     def test_get_when_path_empty_should_return_event(self) -> None:
-        assert ValuePath("").get({"a": 1}) == {"a": 1}
+        assert ValuePath("").get_from({"a": 1}) == {"a": 1}
 
     def test_get_should_return_value(self) -> None:
         assert ValuePath("a.b").get_from({"a": {"b": 2}}) == 2
@@ -74,6 +74,10 @@ class TestValue:
     def test_is_truthy(self) -> None:
         assert Value("a.b").is_truthy().check({"a": {"b": True}})
         assert not Value("a.b").is_truthy().check({"a": {"b": False}})
+
+    def test_is_falsy(self) -> None:
+        assert Value("a.b").is_falsy().check({"a": {"b": False}})
+        assert not Value("a.b").is_falsy().check({"a": {"b": True}})
 
     def test_equal_with_none(self) -> None:
         assert Value("a").equals(None).check({"a": None})

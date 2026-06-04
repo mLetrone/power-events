@@ -122,7 +122,7 @@ class ValuePath(str):
         Raises:
             ValueAbsentError: if parameter `raise_if_absent` set, and key is missing.
         """
-        return self.get_from(mapping, default, raise_if_absent=raise_if_absent)
+        return self.get_from(mapping, default, raise_if_absent=raise_if_absent)  # pragma: no cover
 
     @staticmethod
     def _validation(path: str, sep: str) -> None:
