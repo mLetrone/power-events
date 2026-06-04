@@ -577,6 +577,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/event_converter/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Event Converter
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1109,7 +1130,7 @@
 
 
 <a href="#exceptions.ValueAbsentError" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">ValueAbsentError</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">str</span><span class="p">,</span> <span class="n">missing_key</span><span class="p">:</span> <span class="n">str</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n"><span title="typing.Mapping">Mapping</span></span><span class="p">[</span><span class="n"><span title="typing.Any">Any</span></span><span class="p">,</span> <span class="n"><span title="typing.Any">Any</span></span><span class="p">])</span>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">ValueAbsentError</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">str</span><span class="p">,</span> <span class="n">missing_key</span><span class="p">:</span> <span class="n">str</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n"><span title="collections.abc.Mapping">Mapping</span></span><span class="p">[</span><span class="n"><span title="typing.Any">Any</span></span><span class="p">,</span> <span class="n"><span title="typing.Any">Any</span></span><span class="p">])</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -1259,7 +1280,7 @@
 
 
 <a href="#exceptions.NoRouteFoundError" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">NoRouteFoundError</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="n"><span title="typing.Mapping">Mapping</span></span><span class="p">[</span><span class="n"><span title="typing.Any">Any</span></span><span class="p">,</span> <span class="n"><span title="typing.Any">Any</span></span><span class="p">],</span> <span class="n">routes</span><span class="p">:</span> <span class="n"><span title="typing.List">List</span></span><span class="p">[</span><span class="n">str</span><span class="p">])</span>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">NoRouteFoundError</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="n"><span title="collections.abc.Mapping">Mapping</span></span><span class="p">[</span><span class="n"><span title="typing.Any">Any</span></span><span class="p">,</span> <span class="n"><span title="typing.Any">Any</span></span><span class="p">],</span> <span class="n">routes</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n">str</span><span class="p">])</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -1287,7 +1308,7 @@
                 <code>event</code>
             </td>
             <td>
-                  <code><span title="typing.Mapping">Mapping</span>[<span title="typing.Any">Any</span>, <span title="typing.Any">Any</span>]</code>
+                  <code><span title="collections.abc.Mapping">Mapping</span>[<span title="typing.Any">Any</span>, <span title="typing.Any">Any</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1303,7 +1324,7 @@
                 <code>routes</code>
             </td>
             <td>
-                  <code><span title="typing.List">List</span>[str]</code>
+                  <code>list[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1352,7 +1373,7 @@
 
 
 <a href="#exceptions.MultipleRoutesError" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">MultipleRoutesError</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="n"><span title="typing.Mapping">Mapping</span></span><span class="p">[</span><span class="n"><span title="typing.Any">Any</span></span><span class="p">,</span> <span class="n"><span title="typing.Any">Any</span></span><span class="p">],</span> <span class="n">routes</span><span class="p">:</span> <span class="n"><span title="typing.List">List</span></span><span class="p">[</span><span class="n">str</span><span class="p">])</span>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">MultipleRoutesError</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="n"><span title="collections.abc.Mapping">Mapping</span></span><span class="p">[</span><span class="n"><span title="typing.Any">Any</span></span><span class="p">,</span> <span class="n"><span title="typing.Any">Any</span></span><span class="p">],</span> <span class="n">routes</span><span class="p">:</span> <span class="n">list</span><span class="p">[</span><span class="n">str</span><span class="p">])</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -1380,7 +1401,7 @@
                 <code>event</code>
             </td>
             <td>
-                  <code><span title="typing.Mapping">Mapping</span>[<span title="typing.Any">Any</span>, <span title="typing.Any">Any</span>]</code>
+                  <code><span title="collections.abc.Mapping">Mapping</span>[<span title="typing.Any">Any</span>, <span title="typing.Any">Any</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1396,7 +1417,7 @@
                 <code>routes</code>
             </td>
             <td>
-                  <code><span title="typing.List">List</span>[str]</code>
+                  <code>list[str]</code>
             </td>
             <td>
               <div class="doc-md-description">

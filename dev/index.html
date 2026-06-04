@@ -457,6 +457,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#modular-routing-with-eventrouter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modular routing with EventRouter
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -666,6 +675,27 @@
           </ul>
         </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="usage/event_converter/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Event Converter
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -999,6 +1029,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#modular-routing-with-eventrouter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modular routing with EventRouter
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1026,7 +1065,7 @@
 <hr />
 <p><a href="https://github.com/MLetrone/power-events/actions/workflows/ci.yml"><img alt="Test" src="https://github.com/MLetrone/power-events/actions/workflows/ci.yml/badge.svg?branch=main" /></a>
   <a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/MLetrone/power-events"><img alt="Coverage" src="https://coverage-badge.samuelcolvin.workers.dev/MLetrone/power-events.svg" /></a>
-  <a href="https://www.python.org/"><img alt="Language" src="https://img.shields.io/badge/Language-python≥3.9-3776ab?style=flat-square&amp;logo=Python" /></a>
+  <a href="https://www.python.org/"><img alt="Language" src="https://img.shields.io/badge/Language-python_3.11_%7C_3.12_%7C_3.13_%7C_3.14-3776ab?style=flat-square&amp;logo=Python" /></a>
   <img alt="License" src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" />
   <img alt="Style" src="https://img.shields.io/badge/Style-ruff-9a9a9a?style=flat-square" />
   <img alt="Lint" src="https://img.shields.io/badge/Lint-ruff,%20mypy-brightgreen?style=flat-square" /></p>
@@ -1041,6 +1080,9 @@ It simplifies the organization of complex events by applying specific routing ru
 <li><strong>Syntax</strong>: Lean to standards like Powertools or FastAPI.</li>
 <li><strong>Easy</strong>: Design to be easy to read and use.</li>
 <li><strong>Flexible</strong>: You can do whatever condition at any depth level in your event.</li>
+<li><strong>Modular routing</strong>: Split routes across <code>EventRouter</code> instances and compose them into one <code>EventResolver</code>.</li>
+<li><strong>Event converter</strong>: Transform raw events into typed objects (dataclass, Pydantic model, …) before they reach your handlers.</li>
+<li><strong>Parallel execution</strong>: Matching routes are executed concurrently for maximum throughput.</li>
 <li><strong>Fully tested</strong>: 100% coverage.</li>
 <li><strong>Fully typed</strong>: compatible out of the box with <code>mypy</code> !</li>
 <li><strong>Lightweight</strong></li>
@@ -1126,6 +1168,45 @@ In real condition, don't need to use it.</p>
 <span class="p">})</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;The order created is a physical purchase: 12345&quot;</span><span class="p">]</span>
 </code></pre></div>
 <p>It's possible to perform <code>OR</code>, <code>AND</code>, <code>NEG</code> operation over conditions.</p>
+<h3 id="modular-routing-with-eventrouter">Modular routing with EventRouter<a class="headerlink" href="#modular-routing-with-eventrouter" title="Permanent link">&para;</a></h3>
+<p><em>Split routes across dedicated routers and compose them into one resolver</em></p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">power_events</span> <span class="kn">import</span> <span class="n">EventResolver</span><span class="p">,</span> <span class="n">EventRouter</span>
+<span class="kn">from</span> <span class="nn">power_events.conditions</span> <span class="kn">import</span> <span class="n">Value</span>
+
+<span class="n">order_router</span> <span class="o">=</span> <span class="n">EventRouter</span><span class="p">()</span>
+
+<span class="nd">@order_router</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;order_created&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">handle_order_created</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Order created: </span><span class="si">{</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;order_id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="nd">@order_router</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;order_deleted&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">handle_order_deleted</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Order deleted: </span><span class="si">{</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;order_id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+
+
+<span class="n">user_router</span> <span class="o">=</span> <span class="n">EventRouter</span><span class="p">()</span>
+
+<span class="nd">@user_router</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;user_created&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">handle_user_created</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;User created: </span><span class="si">{</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">EventResolver</span><span class="p">()</span>
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">order_router</span><span class="p">,</span> <span class="n">base_condition</span><span class="o">=</span><span class="n">Value</span><span class="p">(</span><span class="s2">&quot;service&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;order&quot;</span><span class="p">))</span>
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">user_router</span><span class="p">,</span> <span class="n">base_condition</span><span class="o">=</span><span class="n">Value</span><span class="p">(</span><span class="s2">&quot;service&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">))</span>
+
+<span class="k">assert</span> <span class="n">app</span><span class="o">.</span><span class="n">resolve</span><span class="p">({</span>
+    <span class="s2">&quot;service&quot;</span><span class="p">:</span> <span class="s2">&quot;order&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;order_created&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;order_id&quot;</span><span class="p">:</span> <span class="s2">&quot;12345&quot;</span><span class="p">,</span>
+<span class="p">})</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;Order created: 12345&quot;</span><span class="p">]</span>
+
+<span class="k">assert</span> <span class="n">app</span><span class="o">.</span><span class="n">resolve</span><span class="p">({</span>
+    <span class="s2">&quot;service&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;user_created&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="s2">&quot;67890&quot;</span><span class="p">,</span>
+<span class="p">})</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;User created: 67890&quot;</span><span class="p">]</span>
+</code></pre></div>
 
 
 

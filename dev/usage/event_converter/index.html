@@ -10,13 +10,13 @@
         <meta name="author" content="Mathieu LETRONE">
       
       
-        <link rel="canonical" href="https://docs.power-events.dev/latest/usage/conditions/">
+        <link rel="canonical" href="https://docs.power-events.dev/latest/usage/event_converter/">
       
       
-        <link rel="prev" href="../../installation/">
+        <link rel="prev" href="../routing/">
       
       
-        <link rel="next" href="../">
+        <link rel="next" href="../../api/conditions/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Conditions - Power-events</title>
+        <title>Event Converter - Power-events</title>
       
     
     
@@ -70,7 +70,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#whats-a-condition" class="md-skip">
+        <a href="#event-converter" class="md-skip">
           Skip to content
         </a>
       
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Conditions
+              Event Converter
             
           </span>
         </div>
@@ -213,7 +213,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="./" class="md-tabs__link">
+        <a href="../conditions/" class="md-tabs__link">
           
   
   Usage
@@ -452,28 +452,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Conditions
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../conditions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -482,86 +464,6 @@
   
 
       </a>
-      
-        
-
-  
-
-<nav class="md-nav md-nav--secondary" aria-label="Page contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Page contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#whats-a-condition" class="md-nav__link">
-    <span class="md-ellipsis">
-      What's a condition?
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lets-create-some" class="md-nav__link">
-    <span class="md-ellipsis">
-      Let's create some
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Let's create some">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#path" class="md-nav__link">
-    <span class="md-ellipsis">
-      Path
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#predicate" class="md-nav__link">
-    <span class="md-ellipsis">
-      Predicate
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#mapping" class="md-nav__link">
-    <span class="md-ellipsis">
-      Mapping
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#combination" class="md-nav__link">
-    <span class="md-ellipsis">
-      Combination
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -685,10 +587,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../event_converter/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Event Converter
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -697,6 +619,37 @@
   
 
       </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Page contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Page contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#basic-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Usage
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -975,6 +928,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -983,62 +938,11 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#whats-a-condition" class="md-nav__link">
+  <a href="#basic-usage" class="md-nav__link">
     <span class="md-ellipsis">
-      What's a condition?
+      Basic Usage
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lets-create-some" class="md-nav__link">
-    <span class="md-ellipsis">
-      Let's create some
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Let's create some">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#path" class="md-nav__link">
-    <span class="md-ellipsis">
-      Path
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#predicate" class="md-nav__link">
-    <span class="md-ellipsis">
-      Predicate
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#mapping" class="md-nav__link">
-    <span class="md-ellipsis">
-      Mapping
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#combination" class="md-nav__link">
-    <span class="md-ellipsis">
-      Combination
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1060,187 +964,35 @@
   
 
 
-  <h1>Conditions</h1>
+<h1 id="event-converter">Event Converter<a class="headerlink" href="#event-converter" title="Permanent link">&para;</a></h1>
+<p>The <code>event_converter</code> decorator allows you to transform the raw event data into a more structured format before it is passed to your route handler.
+This is particularly useful when you want to work with data classes or other custom objects instead of dictionaries.</p>
+<h2 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Permanent link">&para;</a></h2>
+<p>Here's how you can use the <code>event_converter</code> to convert a dictionary into a Pydantic model:</p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+<span class="kn">from</span> <span class="nn">power_events</span> <span class="kn">import</span> <span class="n">EventResolver</span><span class="p">,</span> <span class="n">event_converter</span>
 
-<p>The true power of <strong>Power-event</strong> lies on its condition system.
-It can combine multiple conditions the same way it's possible in <a href="https://en.wikipedia.org/wiki/Boolean_algebra">Boolean Algebra</a>.</p>
-<p>This way, you can use these operators:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">AND</label><label for="__tabbed_1_2">OR</label><label for="__tabbed_1_3">NOT</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">power_events.conditions</span> <span class="kn">import</span> <span class="n">And</span>
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
 
-<span class="n">condition1</span> <span class="o">&amp;</span> <span class="n">condition2</span>
-<span class="c1"># Or this way</span>
-<span class="n">And</span><span class="p">(</span><span class="n">condition1</span><span class="p">,</span> <span class="n">condition2</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
-</code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">power_events.conditions</span> <span class="kn">import</span> <span class="n">Or</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">EventResolver</span><span class="p">()</span>
 
-<span class="n">condition1</span> <span class="o">|</span> <span class="n">condition2</span>
-<span class="c1"># Or this way</span>
-<span class="n">Or</span><span class="p">(</span><span class="n">condition1</span><span class="p">,</span> <span class="n">condition2</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
-</code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">power_events.conditions</span> <span class="kn">import</span> <span class="n">Neg</span>
-
-<span class="o">~</span><span class="n">condition1</span>
-<span class="c1"># Or this way</span>
-<span class="n">Neg</span><span class="p">(</span><span class="n">condition1</span><span class="p">)</span>
-</code></pre></div>
-</div>
-</div>
-</div>
-<h2 id="whats-a-condition">What's a condition?<a class="headerlink" href="#whats-a-condition" title="Permanent link">&para;</a></h2>
-<p>A condition is defined by <strong>two</strong> things:</p>
-<ul>
-<li>
-<p>A set of predicates to a certain value (precisely a <em>path to value in the event</em>), to verify if the event matches it.</p>
-</li>
-<li>
-<p>And as said previously, the ability to be compatible with <em>Boolean Algebra</em>.</p>
-</li>
-</ul>
-<h2 id="lets-create-some">Let's create some<a class="headerlink" href="#lets-create-some" title="Permanent link">&para;</a></h2>
-<p>The entrypoint to create a condition is <a href="../../api/value/#conditions.value.Value"><code>Value</code></a>.
-With which, we define the value path in the event to check under the predicate given.</p>
-<h3 id="path">Path<a class="headerlink" href="#path" title="Permanent link">&para;</a></h3>
-<p>The path to a value is a string containing all the keys to reach it inside an event.
-It allows getting a value at any depth level, whether the value is there or not.</p>
-<p>Each key should be separated by a <code>.</code>,
-otherwise it may:</p>
-<ul>
-<li>Either raise a validation error.<ul>
-<li>By beginning by separator. <code>.menu</code> <img alt="❌" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/274c.svg" title=":x:" /></li>
-<li>By ending by separator. <code>menu.</code> <img alt="❌" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/274c.svg" title=":x:" /></li>
-<li>Use consecutive separators. <code>menu..dessert</code> <img alt="❌" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/274c.svg" title=":x:" /></li>
-</ul>
-</li>
-<li>Or worst, not work as expected!</li>
-</ul>
-<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">power_events.conditions</span> <span class="kn">import</span> <span class="n">ValuePath</span>
-
-<span class="n">event</span> <span class="o">=</span> <span class="p">{}</span>
-
-<span class="c1"># this path</span>
-<span class="n">value</span> <span class="o">=</span> <span class="n">ValuePath</span><span class="p">(</span><span class="s2">&quot;menu.desserts.parfait&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_from</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-
-<span class="c1"># is equivalent to this with the event</span>
-<span class="n">value</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;menu&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;desserts&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;parfait&quot;</span><span class="p">)</span>
-</code></pre></div>
-<p>I don't know about you, but I prefer to read the first way with the <code>ValuePath</code>, don't you?</p>
-<p><em>yep totally biased <img alt="🤫" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f92b.svg" title=":shushing_face:" /></em></p>
-<h3 id="predicate">Predicate<a class="headerlink" href="#predicate" title="Permanent link">&para;</a></h3>
-<p>To add predicate at the value check, you can either use built-in method (like <a href="../../api/value/#conditions.value.Value.equals"><code>equals</code></a>, <a href="../../api/value/#conditions.value.Value.one_of"><code>one_of</code></a>, etc.),
-or using yours, passing it to the method <a href="../../api/value/#conditions.value.Value.match"><code>match</code></a>.</p>
-<div class="admonition info">
-<p class="admonition-title">Info</p>
-<p>Each time you add a predicate to a <code>Value</code> object, it's combined with its current.</p>
-</div>
-<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">power_events.conditions</span> <span class="kn">import</span> <span class="n">Value</span>
-
-<span class="n">desserts_minimum_selection</span> <span class="o">=</span> <span class="n">Value</span><span class="p">(</span><span class="s2">&quot;menu.desserts&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;parfait&quot;</span><span class="p">,</span> <span class="s2">&quot;crepes&quot;</span><span class="p">,</span> <span class="s2">&quot;cookie&quot;</span><span class="p">)</span>
-<span class="n">parfait_price_cond</span> <span class="o">=</span> <span class="n">Value</span><span class="p">(</span><span class="s2">&quot;menu.desserts.parfait.price&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="k">lambda</span> <span class="n">price</span><span class="p">:</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">price</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">)</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;user_created&quot;</span><span class="p">)</span>
+<span class="nd">@event_converter</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">model_validate</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">handle_user_created</span><span class="p">(</span><span class="n">user</span><span class="p">:</span> <span class="n">User</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;User created: </span><span class="si">{</span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
 
 <span class="n">event</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;restaurant&quot;</span><span class="p">:</span> <span class="s2">&quot;La maison&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;menu&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;entrees&quot;</span><span class="p">:</span> <span class="p">{},</span>
-        <span class="s2">&quot;dishes&quot;</span><span class="p">:</span> <span class="p">{},</span>
-        <span class="s2">&quot;desserts&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;flan&quot;</span><span class="p">:</span> <span class="p">{},</span>
-            <span class="s2">&quot;crepes&quot;</span><span class="p">:</span> <span class="p">{},</span>
-            <span class="s2">&quot;parfait&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="mf">6.5</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;cookie&quot;</span><span class="p">:</span> <span class="p">{}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-<span class="sd">&quot;&quot;&quot; Here we check that the menu as minimum cookie, crepes and parfait as dessert,</span>
-<span class="sd">*and* parfait price is between $0 and $10.</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="k">assert</span> <span class="p">(</span><span class="n">desserts_minimum_selection</span> <span class="o">&amp;</span> <span class="n">parfait_price_cond</span><span class="p">)</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
-</code></pre></div>
-<div class="admonition info">
-<p class="admonition-title">Things to know</p>
-<ul>
-<li>String and integer keys are supported.</li>
-<li>If the value is <strong>absent</strong>:<ul>
-<li>By default, the event <strong>fails</strong> the condition.</li>
-<li>You can raise an error using the option <code>raise_if_absent</code>, and a <a href="../../api/exception/#exceptions.ValueAbsentError"><code>ValueAbsentError</code></a> exception will be raised.</li>
-</ul>
-</li>
-</ul>
-</div>
-<h3 id="mapping">Mapping<a class="headerlink" href="#mapping" title="Permanent link">&para;</a></h3>
-<p>Sometimes, the value in the event has been serialized to simplify the format, like date passed as timestamp or iso format.
-You can provide a mapper, to choose how the value will be checked.</p>
-<p>An example with a date, the menu carte should be the menu of the week. But the date is represented as a string.</p>
-<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
-
-<span class="kn">from</span> <span class="nn">power_events.conditions</span> <span class="kn">import</span> <span class="n">Value</span>
-
-<span class="n">DATE_FORMAT</span> <span class="o">=</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span>
-
-
-<span class="k">def</span> <span class="nf">to_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
-    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">DATE_FORMAT</span><span class="p">)</span>
-
-
-<span class="n">date_cond</span> <span class="o">=</span> <span class="n">Value</span><span class="p">(</span><span class="s2">&quot;effective-date&quot;</span><span class="p">,</span> <span class="n">to_datetime</span><span class="p">)</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="n">val</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">weeks</span><span class="o">=</span><span class="mi">1</span><span class="p">)))</span>
-
-<span class="n">event</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;restaurant&quot;</span><span class="p">:</span> <span class="s2">&quot;La maison&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;effective-date&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">DATE_FORMAT</span><span class="p">),</span>
-    <span class="s2">&quot;menu&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;entrees&quot;</span><span class="p">:</span> <span class="p">{},</span>
-        <span class="s2">&quot;dishes&quot;</span><span class="p">:</span> <span class="p">{},</span>
-        <span class="s2">&quot;desserts&quot;</span><span class="p">:</span> <span class="p">{}</span>
-    <span class="p">}</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;user_created&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;John Doe&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;john.doe@example.com&quot;</span>
 <span class="p">}</span>
 
-<span class="k">assert</span> <span class="n">date_cond</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="combination">Combination<a class="headerlink" href="#combination" title="Permanent link">&para;</a></h3>
-<p>As show before, it's possible to combine <code>Value</code> (using And or Or logic).
-But it's also possible to combine the resulting condition, and so on, to have a tree of conditions.</p>
-<p>To have something like this:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Code</label><label for="__tabbed_2_2">Graph</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
-
-<span class="kn">from</span> <span class="nn">power_events.conditions</span> <span class="kn">import</span> <span class="n">Value</span>
-
-<span class="n">desserts_minimum_selection</span> <span class="o">=</span> <span class="n">Value</span><span class="p">(</span><span class="s2">&quot;menu.desserts&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;parfait&quot;</span><span class="p">,</span> <span class="s2">&quot;crepes&quot;</span><span class="p">,</span> <span class="s2">&quot;cookie&quot;</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">valid_range_price</span><span class="p">(</span><span class="n">price</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="k">return</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">price</span> <span class="o">&lt;</span> <span class="mi">10</span>
-
-<span class="n">parfait_price_cond</span> <span class="o">=</span> <span class="n">Value</span><span class="p">(</span><span class="s2">&quot;menu.desserts.parfait.price&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">valid_range_price</span><span class="p">)</span>
-<span class="n">crepes_price_cond</span> <span class="o">=</span> <span class="n">Value</span><span class="p">(</span><span class="s2">&quot;menu.desserts.crepes.price&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">valid_range_price</span><span class="p">)</span>
-
-<span class="n">restaurant_name_cond</span> <span class="o">=</span> <span class="n">Value</span><span class="p">(</span><span class="s2">&quot;restaurant&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">is_not_empty</span><span class="p">()</span>
-
-<span class="n">condition</span> <span class="o">=</span> <span class="n">restaurant_name_cond</span> <span class="o">&amp;</span> <span class="p">(</span>
-    <span class="n">desserts_minimum_selection</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">parfait_price_cond</span> <span class="o">|</span> <span class="n">crepes_price_cond</span><span class="p">)</span>
-    <span class="p">)</span>
-</code></pre></div>
-</div>
-<div class="tabbed-block">
-<pre class="mermaid"><code>graph TD
-    A[AND] --&gt; B[restaurant_name_cond]
-    A --&gt; C[AND]
-    C --&gt; D[desserts_minimum_selection]
-    C --&gt; E[OR]
-    E --&gt; F[parfait_price_cond]
-    E --&gt; H[crepes_price_cond]</code></pre>
-</div>
-</div>
-</div>
+<p>In this example, the <code>event_converter</code> takes any callable that maps the raw event dictionary to the desired type — here <code>User.model_validate</code>.
+The <code>handle_user_created</code> function then receives a <code>User</code> object as its first argument instead of the raw event dictionary.</p>
 
 
 
@@ -1276,7 +1028,7 @@ But it's also possible to combine the resulting condition, and so on, to have a 
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../installation/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Installation">
+          <a href="../routing/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Event handling">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1286,20 +1038,20 @@ But it's also possible to combine the resulting condition, and so on, to have a 
                 Previous
               </span>
               <div class="md-ellipsis">
-                Installation
+                Event handling
               </div>
             </div>
           </a>
         
         
           
-          <a href="../" class="md-footer__link md-footer__link--next" aria-label="Next: Analogy">
+          <a href="../../api/conditions/" class="md-footer__link md-footer__link--next" aria-label="Next: Base condition">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Analogy
+                Base condition
               </div>
             </div>
             <div class="md-footer__button md-icon">

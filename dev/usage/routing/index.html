@@ -16,7 +16,7 @@
         <link rel="prev" href="../first_steps/">
       
       
-        <link rel="next" href="../../api/conditions/">
+        <link rel="next" href="../event_converter/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -686,6 +686,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#routers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Routers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exception-handling" class="md-nav__link">
     <span class="md-ellipsis">
       Exception handling
@@ -706,6 +715,27 @@
           </ul>
         </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../event_converter/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Event Converter
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -1069,6 +1099,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#routers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Routers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exception-handling" class="md-nav__link">
     <span class="md-ellipsis">
       Exception handling
@@ -1292,6 +1331,49 @@ Another way is to use the <code>fallback</code> decorator to override the other 
 <span class="k">def</span> <span class="nf">fallback</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="s2">&quot;fallback&quot;</span>
 </code></pre></div>
+<h2 id="routers">Routers<a class="headerlink" href="#routers" title="Permanent link">&para;</a></h2>
+<p>To better organize your project, you can split your routes into multiple <code>EventRouter</code> instances and then include them in your main <code>EventResolver</code>.
+This is useful for grouping related routes together, for example, by domain.</p>
+<div class="language-python highlight"><span class="filename">Using multiple EventRouters</span><pre><span></span><code><span class="kn">from</span> <span class="nn">power_events</span> <span class="kn">import</span> <span class="n">EventResolver</span><span class="p">,</span> <span class="n">EventRouter</span>
+<span class="kn">from</span> <span class="nn">power_events.conditions</span> <span class="kn">import</span> <span class="n">Value</span>
+
+<span class="c1"># Router for order-related events</span>
+<span class="n">order_router</span> <span class="o">=</span> <span class="n">EventRouter</span><span class="p">()</span>
+
+<span class="nd">@order_router</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;order_created&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">handle_order_created</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Order created: </span><span class="si">{</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;order_id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nd">@order_router</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;order_deleted&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">handle_order_deleted</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Order deleted: </span><span class="si">{</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;order_id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># Router for user-related events</span>
+<span class="n">user_router</span> <span class="o">=</span> <span class="n">EventRouter</span><span class="p">()</span>
+
+<span class="nd">@user_router</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;user_created&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">handle_user_created</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;User created: </span><span class="si">{</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nd">@user_router</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;user_deleted&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">handle_user_deleted</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;User deleted: </span><span class="si">{</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># Compose both routers into one resolver</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">EventResolver</span><span class="p">()</span>
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">order_router</span><span class="p">,</span> <span class="n">base_condition</span><span class="o">=</span><span class="n">Value</span><span class="p">(</span><span class="s2">&quot;service&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;order&quot;</span><span class="p">))</span>
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">user_router</span><span class="p">,</span> <span class="n">base_condition</span><span class="o">=</span><span class="n">Value</span><span class="p">(</span><span class="s2">&quot;service&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">))</span>
+
+<span class="c1"># Routed to order_router</span>
+<span class="n">app</span><span class="o">.</span><span class="n">resolve</span><span class="p">({</span><span class="s2">&quot;service&quot;</span><span class="p">:</span> <span class="s2">&quot;order&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;order_created&quot;</span><span class="p">,</span> <span class="s2">&quot;order_id&quot;</span><span class="p">:</span> <span class="s2">&quot;42&quot;</span><span class="p">})</span>
+
+<span class="c1"># Routed to user_router</span>
+<span class="n">app</span><span class="o">.</span><span class="n">resolve</span><span class="p">({</span><span class="s2">&quot;service&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;user_deleted&quot;</span><span class="p">,</span> <span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="s2">&quot;99&quot;</span><span class="p">})</span>
+</code></pre></div>
+<p>The <code>base_condition</code> passed to <code>include_router</code> is combined with each route's own condition using <code>AND</code>.
+This lets you namespace entire routers by domain, source system, or any other event field — without duplicating that check on every individual route.</p>
 <h2 id="exception-handling">Exception handling<a class="headerlink" href="#exception-handling" title="Permanent link">&para;</a></h2>
 <p>You can add a custom exception handler with any Python exception.
 This allows handling this kind of exception globally and not inside each of your routes.</p>
@@ -1388,13 +1470,13 @@ But <code>validation_exception_handler</code> will handle it.</p>
         
         
           
-          <a href="../../api/conditions/" class="md-footer__link md-footer__link--next" aria-label="Next: Base condition">
+          <a href="../event_converter/" class="md-footer__link md-footer__link--next" aria-label="Next: Event Converter">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Base condition
+                Event Converter
               </div>
             </div>
             <div class="md-footer__button md-icon">

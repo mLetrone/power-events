@@ -577,6 +577,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/event_converter/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Event Converter
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -837,6 +858,15 @@
   <a href="#conditions.value.Value.is_truthy" class="md-nav__link">
     <span class="md-ellipsis">
       is_truthy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conditions.value.Value.is_falsy" class="md-nav__link">
+    <span class="md-ellipsis">
+      is_falsy
     </span>
   </a>
   
@@ -1177,6 +1207,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#conditions.value.Value.is_falsy" class="md-nav__link">
+    <span class="md-ellipsis">
+      is_falsy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#conditions.value.Value.equals" class="md-nav__link">
     <span class="md-ellipsis">
       equals
@@ -1366,7 +1405,7 @@
 
 
 <a href="#conditions.value.ValuePath.__new__" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="fm">__new__</span><span class="p">(</span><span class="nf">path</span><span class="p">:</span> <span class="n">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">separator</span><span class="p">:</span> <span class="n"><span title="typing.Optional">Optional</span></span><span class="p">[</span><span class="n">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="typing_extensions.Self">Self</span></span>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="fm">__new__</span><span class="p">(</span><span class="nf">path</span><span class="p">:</span> <span class="n">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">separator</span><span class="p">:</span> <span class="n">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="typing_extensions.Self">Self</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -1406,7 +1445,7 @@
                 <code>separator</code>
             </td>
             <td>
-                  <code><span title="typing.Optional">Optional</span>[str]</code>
+                  <code>str | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1432,7 +1471,7 @@
 
 
 <a href="#conditions.value.ValuePath.get_from" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">get_from</span><span class="p">(</span><span class="n">mapping</span><span class="p">:</span> <span class="n"><span title="typing.Mapping">Mapping</span></span><span class="p">[</span><span class="n"><span title="typing.Any">Any</span></span><span class="p">,</span> <span class="n"><span title="power_events.conditions.condition.V">V</span></span><span class="p">],</span> <span class="n">default</span><span class="p">:</span> <span class="n"><span title="typing.Union">Union</span></span><span class="p">[</span><span class="n"><span title="power_events.conditions.condition.V">V</span></span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="conditions.value.Absent" href="#conditions.value.Absent">Absent</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><span title="conditions.value.ABSENT">ABSENT</span></span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">raise_if_absent</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="typing.Union">Union</span></span><span class="p">[</span><span class="n"><span title="typing.Any">Any</span></span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="conditions.value.Absent" href="#conditions.value.Absent">Absent</a></span><span class="p">]</span>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">get_from</span><span class="p">(</span><span class="n">mapping</span><span class="p">:</span> <span class="n"><span title="collections.abc.Mapping">Mapping</span></span><span class="p">[</span><span class="n"><span title="typing.Any">Any</span></span><span class="p">,</span> <span class="n"><span title="power_events.conditions.condition.V">V</span></span><span class="p">],</span> <span class="n">default</span><span class="p">:</span> <span class="n"><span title="power_events.conditions.condition.V">V</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-internal" title="conditions.value.Absent" href="#conditions.value.Absent">Absent</a></span> <span class="o">=</span> <span class="n"><span title="conditions.value.ABSENT">ABSENT</span></span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">raise_if_absent</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="typing.Any">Any</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-internal" title="conditions.value.Absent" href="#conditions.value.Absent">Absent</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -1457,7 +1496,7 @@
                 <code>mapping</code>
             </td>
             <td>
-                  <code><span title="typing.Mapping">Mapping</span>[<span title="typing.Any">Any</span>, <span title="power_events.conditions.condition.V">V</span>]</code>
+                  <code><span title="collections.abc.Mapping">Mapping</span>[<span title="typing.Any">Any</span>, <span title="power_events.conditions.condition.V">V</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1473,7 +1512,7 @@
                 <code>default</code>
             </td>
             <td>
-                  <code><span title="typing.Union">Union</span>[<span title="power_events.conditions.condition.V">V</span>, None, <a class="autorefs autorefs-internal" title="conditions.value.Absent" href="#conditions.value.Absent">Absent</a>]</code>
+                  <code><span title="power_events.conditions.condition.V">V</span> | None | <a class="autorefs autorefs-internal" title="conditions.value.Absent" href="#conditions.value.Absent">Absent</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1543,7 +1582,7 @@
 
 
 <a href="#conditions.value.ValuePath.get" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">get</span><span class="p">(</span><span class="n">mapping</span><span class="p">:</span> <span class="n"><span title="typing.Mapping">Mapping</span></span><span class="p">[</span><span class="n"><span title="typing.Any">Any</span></span><span class="p">,</span> <span class="n"><span title="power_events.conditions.condition.V">V</span></span><span class="p">],</span> <span class="n">default</span><span class="p">:</span> <span class="n"><span title="typing.Union">Union</span></span><span class="p">[</span><span class="n"><span title="power_events.conditions.condition.V">V</span></span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="conditions.value.Absent" href="#conditions.value.Absent">Absent</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><span title="conditions.value.ABSENT">ABSENT</span></span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">raise_if_absent</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="typing.Union">Union</span></span><span class="p">[</span><span class="n"><span title="typing.Any">Any</span></span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="conditions.value.Absent" href="#conditions.value.Absent">Absent</a></span><span class="p">]</span>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">get</span><span class="p">(</span><span class="n">mapping</span><span class="p">:</span> <span class="n"><span title="collections.abc.Mapping">Mapping</span></span><span class="p">[</span><span class="n"><span title="typing.Any">Any</span></span><span class="p">,</span> <span class="n"><span title="power_events.conditions.condition.V">V</span></span><span class="p">],</span> <span class="n">default</span><span class="p">:</span> <span class="n"><span title="power_events.conditions.condition.V">V</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-internal" title="conditions.value.Absent" href="#conditions.value.Absent">Absent</a></span> <span class="o">=</span> <span class="n"><span title="conditions.value.ABSENT">ABSENT</span></span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">raise_if_absent</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="typing.Any">Any</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-internal" title="conditions.value.Absent" href="#conditions.value.Absent">Absent</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -1569,7 +1608,7 @@
                 <code>mapping</code>
             </td>
             <td>
-                  <code><span title="typing.Mapping">Mapping</span>[<span title="typing.Any">Any</span>, <span title="power_events.conditions.condition.V">V</span>]</code>
+                  <code><span title="collections.abc.Mapping">Mapping</span>[<span title="typing.Any">Any</span>, <span title="power_events.conditions.condition.V">V</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1585,7 +1624,7 @@
                 <code>default</code>
             </td>
             <td>
-                  <code><span title="typing.Union">Union</span>[<span title="power_events.conditions.condition.V">V</span>, None, <a class="autorefs autorefs-internal" title="conditions.value.Absent" href="#conditions.value.Absent">Absent</a>]</code>
+                  <code><span title="power_events.conditions.condition.V">V</span> | None | <a class="autorefs autorefs-internal" title="conditions.value.Absent" href="#conditions.value.Absent">Absent</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1664,7 +1703,7 @@
 
 
 <a href="#conditions.value.Value" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">Value</span><span class="p">(</span><span class="n">value_path</span><span class="p">:</span> <span class="n">str</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="n"><span title="typing.Optional">Optional</span></span><span class="p">[</span><span class="n"><span title="maypy.Mapper">Mapper</span></span><span class="p">[</span><span class="n"><span title="typing.Any">Any</span></span><span class="p">,</span> <span class="n"><span title="typing.Any">Any</span></span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">Value</span><span class="p">(</span><span class="n">value_path</span><span class="p">:</span> <span class="n">str</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="n"><span title="maypy.Mapper">Mapper</span></span><span class="p">[</span><span class="n"><span title="typing.Any">Any</span></span><span class="p">,</span> <span class="n"><span title="typing.Any">Any</span></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -1708,7 +1747,7 @@
                 <code>mapper</code>
             </td>
             <td>
-                  <code><span title="typing.Optional">Optional</span>[<span title="maypy.Mapper">Mapper</span>[<span title="typing.Any">Any</span>, <span title="typing.Any">Any</span>]]</code>
+                  <code><span title="maypy.Mapper">Mapper</span>[<span title="typing.Any">Any</span>, <span title="typing.Any">Any</span>] | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1846,6 +1885,25 @@ by setting the flag <code>raise_if_absent</code>.</p>
 <div class="doc doc-object doc-function">
 
 
+<h3 id="conditions.value.Value.is_falsy" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">is_falsy</span>
+
+
+<a href="#conditions.value.Value.is_falsy" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">is_falsy</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n"><span title="typing_extensions.Self">Self</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Add value is truthy check to the condition.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h3 id="conditions.value.Value.equals" class="doc doc-heading">
             <span class="doc doc-object-name doc-function-name">equals</span>
 
@@ -1903,9 +1961,9 @@ by setting the flag <code>raise_if_absent</code>.</p>
 <a href="#conditions.value.Value.match_regex" class="headerlink" title="Permanent link">&para;</a></h3>
           <div class="doc-overloads">
 <div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">match_regex</span><span class="p">(</span><span class="n">regex</span><span class="p">:</span> <span class="n"><span title="re.Pattern">Pattern</span></span><span class="p">[</span><span class="n">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n"><span title="typing_extensions.Self">Self</span></span>
-</code></pre></div><div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">match_regex</span><span class="p">(</span><span class="n">regex</span><span class="p">:</span> <span class="n">str</span><span class="p">,</span> <span class="n">flags</span><span class="p">:</span> <span class="n"><span title="typing.Union">Union</span></span><span class="p">[</span><span class="n"><span title="re.RegexFlag">RegexFlag</span></span><span class="p">,</span> <span class="n">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="typing_extensions.Self">Self</span></span>
+</code></pre></div><div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">match_regex</span><span class="p">(</span><span class="n">regex</span><span class="p">:</span> <span class="n">str</span><span class="p">,</span> <span class="n">flags</span><span class="p">:</span> <span class="n"><span title="re.RegexFlag">RegexFlag</span></span> <span class="o">|</span> <span class="n">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="typing_extensions.Self">Self</span></span>
 </code></pre></div>          </div>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">match_regex</span><span class="p">(</span><span class="n">regex</span><span class="p">:</span> <span class="n"><span title="typing.Union">Union</span></span><span class="p">[</span><span class="n"><span title="re.Pattern">Pattern</span></span><span class="p">[</span><span class="n">str</span><span class="p">],</span> <span class="n">str</span><span class="p">],</span> <span class="n">flags</span><span class="p">:</span> <span class="n"><span title="typing.Union">Union</span></span><span class="p">[</span><span class="n"><span title="re.RegexFlag">RegexFlag</span></span><span class="p">,</span> <span class="n">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="typing_extensions.Self">Self</span></span>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">match_regex</span><span class="p">(</span><span class="n">regex</span><span class="p">:</span> <span class="n"><span title="re.Pattern">Pattern</span></span><span class="p">[</span><span class="n">str</span><span class="p">]</span> <span class="o">|</span> <span class="n">str</span><span class="p">,</span> <span class="n">flags</span><span class="p">:</span> <span class="n"><span title="re.RegexFlag">RegexFlag</span></span> <span class="o">|</span> <span class="n">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="typing_extensions.Self">Self</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -1929,7 +1987,7 @@ by setting the flag <code>raise_if_absent</code>.</p>
                 <code>regex</code>
             </td>
             <td>
-                  <code><span title="typing.Union">Union</span>[<span title="re.Pattern">Pattern</span>[str], str]</code>
+                  <code><span title="re.Pattern">Pattern</span>[str] | str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1945,7 +2003,7 @@ by setting the flag <code>raise_if_absent</code>.</p>
                 <code>flags</code>
             </td>
             <td>
-                  <code><span title="typing.Union">Union</span>[<span title="re.RegexFlag">RegexFlag</span>, int]</code>
+                  <code><span title="re.RegexFlag">RegexFlag</span> | int</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1994,7 +2052,7 @@ by setting the flag <code>raise_if_absent</code>.</p>
 
 
 <a href="#conditions.value.Value.one_of" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">one_of</span><span class="p">(</span><span class="n">options</span><span class="p">:</span> <span class="n"><span title="typing.Container">Container</span></span><span class="p">[</span><span class="n"><span title="typing.Any">Any</span></span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n"><span title="typing_extensions.Self">Self</span></span>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">one_of</span><span class="p">(</span><span class="n">options</span><span class="p">:</span> <span class="n"><span title="collections.abc.Container">Container</span></span><span class="p">[</span><span class="n"><span title="typing.Any">Any</span></span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n"><span title="typing_extensions.Self">Self</span></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -2018,7 +2076,7 @@ by setting the flag <code>raise_if_absent</code>.</p>
                 <code>options</code>
             </td>
             <td>
-                  <code><span title="typing.Container">Container</span>[<span title="typing.Any">Any</span>]</code>
+                  <code><span title="collections.abc.Container">Container</span>[<span title="typing.Any">Any</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
