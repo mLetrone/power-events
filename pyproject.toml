@@ -198,15 +198,26 @@ annotated_tag = true
 changelog_incremental = true
 name = "cz_customize" # use custom config
 bump_message = ":rocket: bump: version $current_version → $new_version"
+breaking_change_exclamation_in_title = true
+update_changelog_on_bump = true
 
 [tool.commitizen.customize]
-schema = "<emoji> <type>: <body>"
-schema_pattern = ":.*:(\\s)(feat|fix|perf|refactor)(\\(\\S+\\))?!?:( [^\n\r]+)((\n\n.*)|(\\s*))?$"
-commit_parser = ":.*:\\s(?P<change_type>feat|fix|refactor|perf)(\\(\\S+\\))?!?:\\s(?P<message>.*)"
-bump_pattern = "^:.*:\\s(break|feat|fix|hotfix)"
-bump_map = {"break" = "MAJOR", "feat" = "MINOR", "fix" = "PATCH", "hotfix" = "PATCH"}
+commit_parser = "^(?:(?:[^\\x00-\\x7F]+|:[a-z_]+:)\\s+)?(?P<change_type>feat|fix|refactor|perf|build|ci|chore|docs|style|test|revert)(?:\\((?P<scope>[^()\\r\\n]*)\\))?(?P<breaking>!)?:\\s(?P<message>.*)?"
+changelog_pattern = "^(?:(?:[^\\x00-\\x7F]+|:[a-z_]+:)\\s+)?(feat|fix|refactor|perf|build|ci|chore|docs|style|test|revert)(!)?"
+bump_pattern = "^(?:(?:[^\\x00-\\x7F]+|:[a-z_]+:)\\s+)?((?:feat|fix|refactor|perf|build|ci|chore|docs|style|test|revert)(?:\\(.+\\))?(?:!)?)(?=:)"
+schema_pattern = "(?:(?:[^\\x00-\\x7F]+|:[a-z_]+:)\\s+)?(feat|fix|refactor|perf|build|ci|chore|docs|style|test|revert)(\\(.+\\))?(!)?: .+"
+
+[tool.commitizen.customize.bump_map]
+"BREAKING CHANGE" = "MAJOR"
+"\\w+!" = "MAJOR"
+"feat" = "MINOR"
+"fix" = "PATCH"
+"perf" = "PATCH"
+"refactor" = "PATCH"
+
 
 [tool.commitizen.change_type_map]
 feat = ":sparkles: Features"
 fix = ":bug: Bug fixes"
 refactor = ":recycle: Refactoring"
+perf = ":zap: Performance"
