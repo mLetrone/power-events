@@ -103,7 +103,7 @@ jobs:
     needs: [ tests ]
     steps:
       - uses: actions/checkout@v6.0.3
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v6.2.0
         with:
           python-version: ${{ vars.PYTHON_VERS }}
       - name: Update pip
@@ -175,7 +175,7 @@ jobs:
       statuses: write
     steps:
       - uses: actions/checkout@v6.0.3
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v6.2.0
         with:
           python-version: ${{ vars.PYTHON_VERS }}
       - name: Update pip
